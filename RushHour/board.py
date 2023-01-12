@@ -1,5 +1,5 @@
 from car import Car
-
+import numpy as np
 #comment
 class Board:
 
