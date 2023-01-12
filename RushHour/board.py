@@ -1,12 +1,13 @@
 from car import Car
 import numpy as np
+
 #comment
 class Board:
 
     def __init__(self, dim: int, filename: str) -> None:
         self.dim = dim
         self.cars = []
-        self.grid = np.full((dim, dim), "O")
+        self.grid = np.full((dim, dim), "-")
         self.load_cars(f"gameboards/{filename}.csv")
         self.add_cars_to_grid()
         self.cars[0].get_car_spaces()
