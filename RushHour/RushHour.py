@@ -2,6 +2,7 @@ from typing import Any, List
 from sys import argv
 from car import Car
 from board import Board
+import numpy as np
 
 
 if __name__ == "__main__":
