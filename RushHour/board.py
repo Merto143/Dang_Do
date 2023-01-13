@@ -8,8 +8,10 @@ class Board:
         self.dim = dim
         self.cars = []
         self.grid = np.full((dim, dim), "-")
+        self.moveable_cars = []
         self.load_cars(f"gameboards/{filename}.csv")
         self.add_cars_to_grid()
+
 
 
     def load_cars(self, file):
@@ -38,6 +40,9 @@ class Board:
 
     def get_cars(self):
         return self.cars
+
+    def get_moveable_cars(self):
+        return self.moveable_cars
 
     def move_car(self, car, direction):
         if self.car_is_movable(car, direction):
@@ -90,3 +95,19 @@ class Board:
                     return True
 
         return False
+
+    def generate_moveability(self):
+        self.moveable_cars = []
+        for car in self.cars:
+            car.clear_legal_moves()
+            if car.get_orientation() == "H":
+                for move in ["E", "W"]:
+                    if self.car_is_movable(car, move):
+                        car.add_legal_move(move)
+                        self.moveable_cars.append(car)
+
+            elif car.get_orientation() == "V":
+                for move in ["N", "S"]:
+                    if self.car_is_movable(car, move):
+                        car.add_legal_move(move)
+                        self.moveable_cars.append(car)

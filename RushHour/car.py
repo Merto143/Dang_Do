@@ -7,7 +7,7 @@ class Car:
         self.col = int(col)
         self.coordinates = [self.row, self.col]
         self.length = int(length)
-
+        self.legal_moves = []
 
     def __repr__(self):
         return self.name
@@ -34,3 +34,9 @@ class Car:
                 spaces.append(space)
 
         return spaces
+
+    def add_legal_move(self, direction):
+        self.legal_moves.append(direction)
+
+    def clear_legal_moves(self):
+        self.legal_moves = []
