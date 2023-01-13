@@ -18,10 +18,19 @@ if __name__ == "__main__":
     carB = game.cars[1]
     carC = game.cars[2]
     carG = game.cars[6]
+    
+    game.move_car(carA, "E")
+    print(game.grid)
+
+    game.move_car(carA, "W")
+    print(game.grid)
+    game.move_car(carA, "E")
+    print(game.grid)
     game.move_car(carA, "W")
     print(game.grid)
     game.move_car(carC, "W")
     print(game.grid)
     game.move_car(carG, "N")
     game.move_car(carG, "N")
+
     print(game.grid)

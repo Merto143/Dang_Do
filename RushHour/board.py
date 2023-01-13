@@ -60,8 +60,26 @@ class Board:
                 car.row += 1
                 self.grid[car.row + car.length - 2][car.col - 1] = car.name
 
+        else:
+            print("Not a legal move!")
         car.coordinates = [car.row, car.col]
 
 
     def car_is_movable(self, car, direction):
-        return True
+        if direction == "E" and car.get_orientation() == "H":
+            if self.grid[car.row - 1][car.col + car.length - 1] == "-":
+                return True
+
+        elif direction == "W" and car.get_orientation() == "H":
+            if self.grid[car.row - 1][car.col - 2] == "-":
+                return True
+
+        elif direction == "N" and car.get_orientation() == "V":
+            if self.grid[car.row - 2][car.col - 1] == "-":
+                return True
+
+        elif direction == "S" and car.get_orientation() == "V":
+            if self.grid[car.row + car.length - 1][car.col - 1] == "-":
+                return True
+
+        return False
