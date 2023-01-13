@@ -3,7 +3,27 @@ from sys import argv
 from car import Car
 from board import Board
 import numpy as np
+import random
 
+
+def random_algorithm():
+    carX = game.cars[len(game.cars) - 1]
+    iterations = 0
+    direction = ""
+
+    while carX.coordinates != [3, 5]:
+        car = random.choice(game.cars)
+
+        if car.get_orientation() == "H":
+            direction = random.choice(["E", "W"])
+
+        elif car.get_orientation() == "V":
+            direction = random.choice(["N", "S"])
+
+        print([car, direction])
+        game.move_car(car, direction)
+        iterations += 1
+    print(iterations)
 
 if __name__ == "__main__":
 
@@ -14,23 +34,6 @@ if __name__ == "__main__":
         filename = argv[1]
 
     game = Board(6, filename)
-    carA = game.cars[0]
-    carB = game.cars[1]
-    carC = game.cars[2]
-    carG = game.cars[6]
-    
-    game.move_car(carA, "E")
-    print(game.grid)
 
-    game.move_car(carA, "W")
-    print(game.grid)
-    game.move_car(carA, "E")
-    print(game.grid)
-    game.move_car(carA, "W")
-    print(game.grid)
-    game.move_car(carC, "W")
-    print(game.grid)
-    game.move_car(carG, "N")
-    game.move_car(carG, "N")
 
-    print(game.grid)
+    random_algorithm()

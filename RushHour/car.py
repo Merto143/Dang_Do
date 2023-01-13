@@ -18,6 +18,9 @@ class Car:
 
     def get_orientation(self):
         return self.orientation
+
+    def get_length(self):
+        return self.length
         
     def get_car_spaces(self):
         spaces = []

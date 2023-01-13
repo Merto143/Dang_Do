@@ -30,7 +30,7 @@ class Board:
         for car in self.cars:
             spaces = car.get_car_spaces()
 
-            for i in range(car.length):
+            for i in range(car.get_length()):
                 space = spaces[i]
                 self.grid[space[0] - 1][space[1] - 1] = car.name
 
@@ -39,6 +39,7 @@ class Board:
 
     def move_car(self, car, direction):
         if self.car_is_movable(car, direction):
+            
             if direction == "E":
                 self.grid[car.row - 1][car.col - 1] = "-"
                 car.col += 1
@@ -60,26 +61,30 @@ class Board:
                 car.row += 1
                 self.grid[car.row + car.length - 2][car.col - 1] = car.name
 
-        else:
-            print("Not a legal move!")
+            print(self.grid)
+
         car.coordinates = [car.row, car.col]
 
 
     def car_is_movable(self, car, direction):
         if direction == "E" and car.get_orientation() == "H":
-            if self.grid[car.row - 1][car.col + car.length - 1] == "-":
-                return True
+            if car.col + car.length  <=  6:
+                if self.grid[car.row - 1][car.col + car.length - 1] == "-":
+                    return True
 
         elif direction == "W" and car.get_orientation() == "H":
-            if self.grid[car.row - 1][car.col - 2] == "-":
-                return True
+            if car.col != 1:
+                if self.grid[car.row - 1][car.col - 2] == "-":
+                    return True
 
         elif direction == "N" and car.get_orientation() == "V":
-            if self.grid[car.row - 2][car.col - 1] == "-":
-                return True
+            if car.row != 1:
+                if self.grid[car.row - 2][car.col - 1] == "-":
+                    return True
 
         elif direction == "S" and car.get_orientation() == "V":
-            if self.grid[car.row + car.length - 1][car.col - 1] == "-":
-                return True
+            if car.row + car.length <= 6:
+                if self.grid[car.row + car.length - 1][car.col - 1] == "-":
+                    return True
 
         return False
