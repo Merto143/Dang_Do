@@ -10,7 +10,6 @@ class Board:
         self.grid = np.full((dim, dim), "-")
         self.load_cars(f"gameboards/{filename}.csv")
         self.add_cars_to_grid()
-        self.cars[0].get_car_spaces()
 
 
     def load_cars(self, file):
@@ -26,6 +25,7 @@ class Board:
 
                 line = f.readline()
 
+
     def add_cars_to_grid(self):
         for car in self.cars:
             spaces = car.get_car_spaces()
@@ -35,3 +35,33 @@ class Board:
                 self.grid[space[0] - 1][space[1] - 1] = car.name
 
         print(self.grid)
+
+
+    def move_car(self, car, direction):
+        if self.car_is_movable(car, direction):
+            if direction == "E":
+                self.grid[car.row - 1][car.col - 1] = "-"
+                car.col += 1
+                self.grid[car.row - 1][car.col + car.length - 2] = car.name
+
+
+            elif direction == "W":
+                car.col -= 1
+                self.grid[car.row - 1][car.col - 1] = car.name
+                self.grid[car.row - 1][car.length + car.col - 1] = "-"
+
+            elif direction == "N":
+                car.row -= 1
+                self.grid[car.row - 1][car.col - 1] = car.name
+                self.grid[car.length + car.row - 1][car.col - 1] = "-"
+
+            elif direction == "S":
+                self.grid[car.row - 1][car.col - 1] = "-"
+                car.row += 1
+                self.grid[car.row + car.length - 2][car.col - 1] = car.name
+
+        car.coordinates = [car.row, car.col]
+
+
+    def car_is_movable(self, car, direction):
+        return True

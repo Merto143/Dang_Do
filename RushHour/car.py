@@ -30,16 +30,3 @@ class Car:
                 spaces.append(space)
 
         return spaces
-
-
-    # def is_moveable(self):
-    #     if self.orientation == "V":
-    #         if condition:
-    #             return True
-    #         else:
-    #             return False
-    #     elif self.orientation == "H":
-    #         if condition:
-    #             return True
-    #         else:
-    #             return False
