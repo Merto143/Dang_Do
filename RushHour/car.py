@@ -12,7 +12,6 @@ class Car:
     def __repr__(self):
         return self.name
 
-
     def get_position(self):
         return self.coordinates
 
@@ -21,7 +20,7 @@ class Car:
 
     def get_length(self):
         return self.length
-        
+
     def get_car_spaces(self):
         spaces = []
 

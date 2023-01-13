@@ -34,12 +34,14 @@ class Board:
                 space = spaces[i]
                 self.grid[space[0] - 1][space[1] - 1] = car.name
 
-        print(self.grid)
+        # print(self.grid)
 
+    def get_cars(self):
+        return self.cars
 
     def move_car(self, car, direction):
         if self.car_is_movable(car, direction):
-            
+
             if direction == "E":
                 self.grid[car.row - 1][car.col - 1] = "-"
                 car.col += 1
@@ -61,7 +63,7 @@ class Board:
                 car.row += 1
                 self.grid[car.row + car.length - 2][car.col - 1] = car.name
 
-            print(self.grid)
+            # print(self.grid)
 
         car.coordinates = [car.row, car.col]
 
