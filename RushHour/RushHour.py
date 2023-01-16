@@ -22,6 +22,7 @@ def random_only_legal_moves_algorithm():
 
     return total_moves
 
+
 def random_all_moves_algorithm():
     cars = game.get_cars()
     carX = cars[len(cars) - 1]
@@ -41,6 +42,7 @@ def random_all_moves_algorithm():
         game.move_car(car, direction)
         total_moves += 1
     return total_moves
+
 
 if __name__ == "__main__":
 

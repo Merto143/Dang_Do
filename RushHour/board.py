@@ -11,14 +11,14 @@ class Board:
 
     def __init__(self, dim: int, filename: str) -> None:
         self.dim = dim
-        self.cars = []
+        self.cars: list[Car] = []
         self.grid = np.full((dim, dim), "-")
-        self.moveable_cars = []
+        self.moveable_cars: list[Car] = []
         self.load_cars(f"gameboards/{filename}.csv")
         self.add_cars_to_grid()
 
 
-    def load_cars(self, file):
+    def load_cars(self, file: str) -> None:
         with open(file) as f:
 
             line = f.readline()
@@ -32,7 +32,7 @@ class Board:
                 line = f.readline()
 
 
-    def add_cars_to_grid(self):
+    def add_cars_to_grid(self) -> None:
         for car in self.cars:
             spaces = car.get_car_spaces()
 
@@ -42,7 +42,7 @@ class Board:
 
         # print(self.grid)
 
-    def visual(self):
+    def visual(self) -> None:
           fig, ax = plt.subplots()
           plt.axis('off')
           plt.xlim([0, self.dim])
@@ -68,20 +68,19 @@ class Board:
 
           plt.show()
 
-    def get_cars(self):
+    def get_cars(self) -> list[Car]:
         return self.cars
 
-    def get_moveable_cars(self):
+    def get_moveable_cars(self) -> list[Car]:
         return self.moveable_cars
 
-    def move_car(self, car, direction):
+    def move_car(self, car: Car, direction: str) -> None:
         if self.car_is_movable(car, direction):
 
             if direction == "E":
                 self.grid[car.get_row() - 1][car.get_col() - 1] = "-"
                 car.set_col(car.get_col() + 1)
                 self.grid[car.get_row() - 1][car.get_col() + car.get_length() - 2] = car.get_name()
-
 
             elif direction == "W":
                 car.set_col(car.get_col() - 1)
@@ -103,9 +102,9 @@ class Board:
         car.set_coordinates(car.get_row(), car.get_col())
 
 
-    def car_is_movable(self, car, direction):
+    def car_is_movable(self, car: Car, direction: str) -> bool:
         if direction == "E" and car.get_orientation() == "H":
-            if car.get_col() + car.get_length()  <=  6:
+            if car.get_col() + car.get_length() <= 6:
                 if self.grid[car.row - 1][car.col + car.length - 1] == "-":
                     return True
 
@@ -126,7 +125,8 @@ class Board:
 
         return False
 
-    def generate_moveability(self):
+
+    def generate_moveability(self) -> None:
         self.moveable_cars = []
         for car in self.cars:
             car.clear_legal_moves()
