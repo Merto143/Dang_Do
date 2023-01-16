@@ -12,6 +12,15 @@ class Car:
     def __repr__(self):
         return self.name
 
+    def get_name(self):
+        return self.name
+
+    def get_col(self):
+        return self.col
+
+    def get_row(self):
+        return self.row
+
     def get_position(self):
         return self.coordinates
 

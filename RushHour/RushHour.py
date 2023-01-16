@@ -51,6 +51,7 @@ if __name__ == "__main__":
         filename = argv[1]
 
     game = Board(6, filename)
+    game.visual()
     all_moves = random_all_moves_algorithm()
     game = Board(6, filename)
     legal_moves = random_only_legal_moves_algorithm()

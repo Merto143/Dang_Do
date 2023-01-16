@@ -1,5 +1,10 @@
 from car import Car
 import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+
+COLORS = {"X" : "#DC3C32", "A" : "#9BC88C", "B" : "#E68C41", "C" : "#5AB9EB", "D" : "#E182A0", "E" : "#6964AA", "F" : "#45966E", "G" : "#AFAFB4", "H" : "#FAE6C8", "I" : "#FFF56E", "J" : "#8C645A", "K" : "#8C8C2D", "L" : "k", "O" : "#FAD24B", "P" : "#9682BE", "Q" : "#3778B4", "R" : "#50AA9B"}
 
 #comment
 class Board:
@@ -37,6 +42,32 @@ class Board:
                 self.grid[space[0] - 1][space[1] - 1] = car.name
 
         # print(self.grid)
+
+    def visual(self):
+          fig, ax = plt.subplots()
+          plt.axis('off')
+          plt.xlim([0, self.dim])
+          plt.ylim([0, self.dim])
+
+          for i in range(0,self.dim + 1):
+              plt.axvline(x = i, color = "0.55")
+              plt.axhline(y = i, color = "0.55")
+
+          for car in self.cars:
+              if car.get_orientation() == "H":
+                  vehicle = Rectangle((car.get_col() - 1, self.dim - car.get_row()), width = car.get_length(), height = 1, color = COLORS[car.get_name()], zorder = 2)
+                  x = vehicle.get_xy()[0] + vehicle.get_width()/2
+                  y = vehicle.get_xy()[1] + vehicle.get_height()/2
+                  ax.annotate(car.get_name(), (x, y), color = 'w', fontsize = 15, ha = 'center', va = 'center')
+                  ax.add_patch(vehicle)
+              else:
+                  vehicle = Rectangle((car.get_col() - 1, self.dim - car.get_row() + 1), width = 1, height = -car.get_length(), color = COLORS[car.get_name()], zorder = 2)
+                  x = vehicle.get_xy()[0] + vehicle.get_width()/2
+                  y = vehicle.get_xy()[1] + vehicle.get_height()/2
+                  ax.annotate(car.get_name(), (x, y), color = 'w', fontsize = 15, ha = 'center', va = 'center')
+                  ax.add_patch(vehicle)
+
+          plt.show()
 
     def get_cars(self):
         return self.cars
