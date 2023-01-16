@@ -18,8 +18,14 @@ class Car:
     def get_col(self):
         return self.col
 
+    def set_col(self, col):
+        self.col = col
+
     def get_row(self):
         return self.row
+
+    def set_row(self, row):
+        self.row = row
 
     def get_position(self):
         return self.coordinates

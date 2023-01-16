@@ -39,7 +39,7 @@ class Board:
 
             for i in range(car.get_length()):
                 space = spaces[i]
-                self.grid[space[0] - 1][space[1] - 1] = car.name
+                self.grid[space[0] - 1][space[1] - 1] = car.get_name()
 
         # print(self.grid)
 
@@ -79,50 +79,50 @@ class Board:
         if self.car_is_movable(car, direction):
 
             if direction == "E":
-                self.grid[car.row - 1][car.col - 1] = "-"
-                car.col += 1
-                self.grid[car.row - 1][car.col + car.length - 2] = car.name
+                self.grid[car.get_row() - 1][car.get_col() - 1] = "-"
+                car.set_col(car.get_col() + 1)
+                self.grid[car.get_row() - 1][car.get_col() + car.get_length() - 2] = car.get_name()
 
 
             elif direction == "W":
-                car.col -= 1
-                self.grid[car.row - 1][car.col - 1] = car.name
-                self.grid[car.row - 1][car.length + car.col - 1] = "-"
+                car.set_col(car.get_col() - 1)
+                self.grid[car.get_row() - 1][car.get_col() - 1] = car.get_name()
+                self.grid[car.get_row() - 1][car.get_length() + car.get_col()() - 1] = "-"
 
             elif direction == "N":
-                car.row -= 1
-                self.grid[car.row - 1][car.col - 1] = car.name
-                self.grid[car.length + car.row - 1][car.col - 1] = "-"
+                car.set_row(car.get_row() - 1)
+                self.grid[car.get_row() - 1][car.get_col() - 1] = car.get_name()
+                self.grid[car.get_length() + car.get_row() - 1][car.get_col() - 1] = "-"
 
             elif direction == "S":
-                self.grid[car.row - 1][car.col - 1] = "-"
-                car.row += 1
-                self.grid[car.row + car.length - 2][car.col - 1] = car.name
+                self.grid[car.get_row() - 1][car.get_col() - 1] = "-"
+                car.set_row(car.get_row() + 1)
+                self.grid[car.get_row() + car.get_length() - 2][car.get_col() - 1] = car.get_name()
 
             # print(self.grid)
 
-        car.coordinates = [car.row, car.col]
+        car.set_coordinates(car.get_row(), car.get_col())
 
 
     def car_is_movable(self, car, direction):
         if direction == "E" and car.get_orientation() == "H":
-            if car.col + car.length  <=  6:
+            if car.get_col() + car.get_length()  <=  6:
                 if self.grid[car.row - 1][car.col + car.length - 1] == "-":
                     return True
 
         elif direction == "W" and car.get_orientation() == "H":
-            if car.col != 1:
-                if self.grid[car.row - 1][car.col - 2] == "-":
+            if car.get_col() != 1:
+                if self.grid[car.get_row() - 1][car.get_col() - 2] == "-":
                     return True
 
         elif direction == "N" and car.get_orientation() == "V":
-            if car.row != 1:
-                if self.grid[car.row - 2][car.col - 1] == "-":
+            if car.get_row() != 1:
+                if self.grid[car.get_row() - 2][car.get_col() - 1] == "-":
                     return True
 
         elif direction == "S" and car.get_orientation() == "V":
-            if car.row + car.length <= 6:
-                if self.grid[car.row + car.length - 1][car.col - 1] == "-":
+            if car.get_row() + car.get_length() <= 6:
+                if self.grid[car.get_row() + car.get_length() - 1][car.get_col() - 1] == "-":
                     return True
 
         return False
