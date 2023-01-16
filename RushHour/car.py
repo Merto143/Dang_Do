@@ -30,6 +30,9 @@ class Car:
     def get_position(self):
         return self.coordinates
 
+    def set_coordinates(self, row, col):
+        self.coordinates = [row, col]
+
     def get_orientation(self):
         return self.orientation
 

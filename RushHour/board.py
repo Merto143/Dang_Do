@@ -18,7 +18,6 @@ class Board:
         self.add_cars_to_grid()
 
 
-
     def load_cars(self, file):
         with open(file) as f:
 
@@ -87,7 +86,7 @@ class Board:
             elif direction == "W":
                 car.set_col(car.get_col() - 1)
                 self.grid[car.get_row() - 1][car.get_col() - 1] = car.get_name()
-                self.grid[car.get_row() - 1][car.get_length() + car.get_col()() - 1] = "-"
+                self.grid[car.get_row() - 1][car.get_length() + car.get_col() - 1] = "-"
 
             elif direction == "N":
                 car.set_row(car.get_row() - 1)
