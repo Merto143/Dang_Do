@@ -1,12 +1,13 @@
 from .car import Car
 import numpy as np
-import matplotlib as mpl
+# import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
+
 COLORS = {"X" : "#DC3C32", "A" : "#9BC88C", "B" : "#E68C41", "C" : "#5AB9EB", "D" : "#E182A0", "E" : "#6964AA", "F" : "#45966E", "G" : "#AFAFB4", "H" : "#FAE6C8", "I" : "#FFF56E", "J" : "#8C645A", "K" : "#8C8C2D", "L" : "k", "O" : "#FAD24B", "P" : "#9682BE", "Q" : "#3778B4", "R" : "#50AA9B"}
 
-#comment
+
 class Board:
 
     def __init__(self, dim: int, filename: str) -> None:
@@ -40,7 +41,6 @@ class Board:
                 space = spaces[i]
                 self.grid[space[0] - 1][space[1] - 1] = car.get_name()
 
-        # print(self.grid)
 
     def visual(self) -> None:
           fig, ax = plt.subplots()
@@ -96,8 +96,6 @@ class Board:
                 self.grid[car.get_row() - 1][car.get_col() - 1] = "-"
                 car.set_row(car.get_row() + 1)
                 self.grid[car.get_row() + car.get_length() - 2][car.get_col() - 1] = car.get_name()
-
-            # print(self.grid)
 
         car.set_coordinates(car.get_row(), car.get_col())
 

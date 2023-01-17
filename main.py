@@ -2,9 +2,6 @@ from sys import argv
 from codefiles.classes.car import Car
 from codefiles.classes.board import Board
 from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, random_all_moves_algorithm
-import numpy as np
-import random
-from tqdm import tqdm
 
 
 if __name__ == "__main__":

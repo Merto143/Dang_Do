@@ -1,9 +1,6 @@
-from sys import argv
 from codefiles.classes.car import Car
 from codefiles.classes.board import Board
-import numpy as np
 import random
-from tqdm import tqdm
 
 
 def random_only_legal_moves_algorithm(game):
@@ -37,7 +34,6 @@ def random_all_moves_algorithm(game):
         elif car.get_orientation() == "V":
             direction = random.choice(["N", "S"])
 
-        # print([car, direction])
         game.move_car(car, direction)
         total_moves += 1
     return total_moves
