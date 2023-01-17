@@ -139,3 +139,10 @@ class Board:
                     if self.car_is_movable(car, move):
                         car.add_legal_move(move)
                         self.moveable_cars.append(car)
+
+
+    def is_solved(self) -> bool:
+        red_car = self.cars[-1]
+        if red_car.get_position() == [round(self.dim / 2), self.dim - 1]:
+            return True
+        return False

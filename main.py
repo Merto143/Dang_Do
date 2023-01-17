@@ -11,11 +11,12 @@ if __name__ == "__main__":
         exit(1)
     else:
         filename = argv[1]
+        dimension = int(filename[8])
 
-    game = Board(6, filename)
+    game = Board(dimension, filename)
     game.visual()
     all_moves = random_all_moves_algorithm(game)
-    game = Board(6, filename)
+    game = Board(dimension, filename)
     legal_moves = random_only_legal_moves_algorithm(game)
 
     print(f"All moves: {all_moves} try's to solve the problem")

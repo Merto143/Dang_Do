@@ -9,7 +9,7 @@ def random_only_legal_moves_algorithm(game):
     game.generate_moveability()
     total_moves = 0
 
-    while carX.get_position() != [3, 5]:
+    while not game.is_solved():
         car = random.choice(game.get_moveable_cars())
         direction = random.choice(car.legal_moves)
         game.move_car(car, direction)
@@ -25,7 +25,7 @@ def random_all_moves_algorithm(game):
     total_moves = 0
     direction = ""
 
-    while carX.get_position() != [3, 5]:
+    while not game.is_solved():
         car = random.choice(cars)
 
         if car.get_orientation() == "H":
