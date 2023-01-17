@@ -12,11 +12,14 @@ if __name__ == "__main__":
         exit(1)
     else:
         filename = argv[1]
-        dimension = int(filename[8])
+        if filename[9] == "2":
+            dimension = 12
+        else:
+            dimension = int(filename[8])
 
     nr = 100
     results = []
-    for i in range(nr):
+    for i in tqdm(range(nr)):
         game = Board(dimension, filename)
         legal_moves = random_only_legal_moves_algorithm(game)
         results.append(legal_moves)
