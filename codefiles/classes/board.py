@@ -1,4 +1,4 @@
-from car import Car
+from .car import Car
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -14,7 +14,7 @@ class Board:
         self.cars: list[Car] = []
         self.grid = np.full((dim, dim), "-")
         self.moveable_cars: list[Car] = []
-        self.load_cars(f"gameboards/{filename}.csv")
+        self.load_cars(f"data/{filename}.csv")
         self.add_cars_to_grid()
 
 
