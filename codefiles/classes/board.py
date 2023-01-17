@@ -68,11 +68,14 @@ class Board:
 
           plt.show()
 
+
     def get_cars(self) -> list[Car]:
         return self.cars
 
+
     def get_moveable_cars(self) -> list[Car]:
         return self.moveable_cars
+
 
     def move_car(self, car: Car, direction: str) -> None:
         if self.car_is_movable(car, direction):
