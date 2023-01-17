@@ -149,3 +149,11 @@ class Board:
         if red_car.get_position() == [round(self.dim / 2), self.dim - 1]:
             return True
         return False
+
+
+    def tiles_blocked(self):
+        pass
+
+
+    def distance_away(self):
+        pass
