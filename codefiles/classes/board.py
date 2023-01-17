@@ -3,6 +3,7 @@ import numpy as np
 # import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+import math
 
 
 COLORS = {"X" : "#DC3C32", "A" : "#9BC88C", "B" : "#E68C41", "C" : "#5AB9EB", "D" : "#E182A0", "E" : "#6964AA", "F" : "#45966E", "G" : "#AFAFB4", "H" : "#FAE6C8", "I" : "#FFF56E", "J" : "#8C645A", "K" : "#8C8C2D", "L" : "k", "O" : "#FAD24B", "P" : "#9682BE", "Q" : "#3778B4", "R" : "#50AA9B"}
@@ -105,7 +106,7 @@ class Board:
 
     def car_is_movable(self, car: Car, direction: str) -> bool:
         if direction == "E" and car.get_orientation() == "H":
-            if car.get_col() + car.get_length() <= 6:
+            if car.get_col() + car.get_length() <= self.dim:
                 if self.grid[car.row - 1][car.col + car.length - 1] == "-":
                     return True
 
@@ -120,7 +121,7 @@ class Board:
                     return True
 
         elif direction == "S" and car.get_orientation() == "V":
-            if car.get_row() + car.get_length() <= 6:
+            if car.get_row() + car.get_length() <= self.dim:
                 if self.grid[car.get_row() + car.get_length() - 1][car.get_col() - 1] == "-":
                     return True
 
@@ -146,7 +147,7 @@ class Board:
 
     def is_solved(self) -> bool:
         red_car = self.cars[-1]
-        if red_car.get_position() == [round(self.dim / 2), self.dim - 1]:
+        if red_car.get_position() == [math.ceil(self.dim / 2), self.dim - 1]:
             return True
         return False
 

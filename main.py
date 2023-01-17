@@ -12,6 +12,7 @@ if __name__ == "__main__":
         exit(1)
     else:
         filename = argv[1]
+
         if filename[9] == "2":
             dimension = 12
         else:
