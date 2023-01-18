@@ -106,7 +106,7 @@ class Board:
     def car_is_movable(self, car, direction):
         if direction == "E" and car.get_orientation() == "H":
             if car.get_col() + car.get_length()  <=  6:
-                if self.grid[car.row - 1][car.col + car.length - 1] == "-":
+                if self.grid[car.get_row() - 1][car.get_col() + car.get_length() - 1] == "-":
                     return True
 
         elif direction == "W" and car.get_orientation() == "H":
