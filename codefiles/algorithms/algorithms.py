@@ -2,7 +2,8 @@ from codefiles.classes.car import Car
 from codefiles.classes.board import Board
 from codefiles.classes.queue import Queue
 import random
-
+import copy
+import numpy as np
 
 def random_only_legal_moves_algorithm(game):
     cars = game.get_cars()
@@ -40,30 +41,49 @@ def random_all_moves_algorithm(game):
 
 def breadth_first(game):
     game.generate_moveability()
-
-    cars = game.get_moveable_cars()
-    memory = []
-    memory.append(game.grid)
+    grid_memory = []
+    move_memory = []
 
     queue = Queue()
+    grid = copy.deepcopy(game.grid)
+    grid_memory.append(grid)
+    node = 0
+    carX = game.get_cars()[-1]
+    carI = game.get_cars()[8]
+    carJ = game.get_cars()[9]
+    cars = game.get_moveable_cars()
 
     for car in cars:
         for direction in car.get_legal_moves():
-            move = [car, direction]
+            move = [car, direction, node]
+            queue.enqueue(move)
 
-        queue.enqueue(move)
+    while (queue.list != []):
+        move = queue.dequeue()
+        game.grid = copy.deepcopy(grid_memory[move[-1]])
+        game.set_car_coordinates()
 
-    move = queue.dequeue()
+        game.move_car(move[0], move[1])
 
-    game.move_car(move[0], move[1])
-    memory.append(game.grid)
-    print(memory)
+        if not any(np.array_equal(game.grid, item) for item in grid_memory):
+            move_memory.append(move)
+            grid_memory.append(copy.deepcopy(game.grid))
+            node += 1
 
-    game.grid = memory[0]
-    game.set_car_coordinates()
-    print(game.cars[0].get_position())
-    print(cars)
-    print(queue.list)
+            game.generate_moveability()
+            cars = game.get_moveable_cars()
+
+            for car in cars:
+                for direction in car.get_legal_moves():
+                    new_move = [car, direction, node]
+                    queue.enqueue(new_move)
+
+
+        if game.is_solved():
+            print("game is solved")
+            break
+
+    print(len(grid_memory))
 
 
 def tiles_blocked_heur(game):

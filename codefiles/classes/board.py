@@ -160,8 +160,8 @@ class Board:
 
     def set_car_coordinates(self):
         added_cars = []
-        for row in range(self.dim - 1):
-            for col in range(self.dim - 1):
+        for row in range(self.dim):
+            for col in range(self.dim):
                 space = self.grid[row][col]
                 if  space != "-" and space not in added_cars:
                     car = self.get_car(space)
