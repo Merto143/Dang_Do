@@ -39,6 +39,9 @@ class Car:
     def get_length(self) -> int:
         return self.length
 
+    def get_legal_moves(self):
+        return self.legal_moves
+
     def get_car_spaces(self) -> list[list[int]]:
         spaces = []
 

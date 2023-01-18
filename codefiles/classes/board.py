@@ -42,7 +42,6 @@ class Board:
             for i in range(car.get_length()):
                 space = spaces[i]
                 self.grid[space[0] - 1][space[1] - 1] = car.get_name()
-        self.visited_states.append(self.grid)
 
 
     def visual(self) -> None:
@@ -152,6 +151,24 @@ class Board:
         if red_car.get_position() == [math.ceil(self.dim / 2), self.dim - 1]:
             return True
         return False
+
+    def get_car(self, name):
+        for car in self.cars:
+            if name == car.name:
+                return car
+
+
+    def set_car_coordinates(self):
+        added_cars = []
+        for row in range(self.dim - 1):
+            for col in range(self.dim - 1):
+                space = self.grid[row][col]
+                if  space != "-" and space not in added_cars:
+                    car = self.get_car(space)
+                    car.row = row + 1
+                    car.col = col + 1
+                    car.set_coordinates(row + 1, col + 1)
+                    added_cars.append(space)
 
 
     def tiles_blocked(self):

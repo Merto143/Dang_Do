@@ -42,6 +42,7 @@ def random_all_moves_algorithm(game):
 
 def breadth_first(game):
     game.generate_moveability()
+
     cars = game.get_moveable_cars()
     memory = []
     memory.append(game.grid)
@@ -49,18 +50,19 @@ def breadth_first(game):
     queue = Queue()
 
     for car in cars:
-        queue.enqueue(car)
+        for direction in car.get_legal_moves():
+            move = [car, direction]
 
-    car = queue.dequeue()
+        queue.enqueue(move)
 
-    if len(car.legal_moves) == 1:
-        direction = car.legal_moves[0]
-        game.move_car(car, direction)
+    move = queue.dequeue()
 
-
-
-
-
+    game.move_car(move[0], move[1])
+    memory.append(game.grid)
     print(memory)
+
+    game.grid = memory[0]
+    game.set_car_coordinates()
+    print(game.cars[0].get_position())
     print(cars)
     print(queue.list)

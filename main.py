@@ -22,7 +22,6 @@ if __name__ == "__main__":
     game = Board(dimension, filename)
     breadth_first(game)
 
-#dit is voor het vinden van het laagste aantal moves na random algoritme
     # for i in tqdm(range(nr)):
     #     game = Board(dimension, filename)
     #     legal_moves = random_only_legal_moves_algorithm(game)
