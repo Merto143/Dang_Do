@@ -41,16 +41,16 @@ def random_all_moves_algorithm(game):
 
 def breadth_first(game):
     game.generate_moveability()
+
     grid_memory = []
     move_memory = []
-
-    queue = Queue()
     grid = copy.deepcopy(game.grid)
-    grid_memory.append(grid)
+    grid_memory.append([grid, "-"])
+
     node = 0
+    queue = Queue()
+
     carX = game.get_cars()[-1]
-    carI = game.get_cars()[8]
-    carJ = game.get_cars()[9]
     cars = game.get_moveable_cars()
 
     for car in cars:
@@ -60,14 +60,15 @@ def breadth_first(game):
 
     while (queue.list != []):
         move = queue.dequeue()
-        game.grid = copy.deepcopy(grid_memory[move[-1]])
+        game.grid = copy.deepcopy(grid_memory[move[-1]][0])
         game.set_car_coordinates()
 
         game.move_car(move[0], move[1])
+        memories = list(zip(*grid_memory))[0]
 
-        if not any(np.array_equal(game.grid, item) for item in grid_memory):
+        if not any(np.array_equal(game.grid, item) for item in memories):
             move_memory.append(move)
-            grid_memory.append(copy.deepcopy(game.grid))
+            grid_memory.append([copy.deepcopy(game.grid), move])
             node += 1
 
             game.generate_moveability()
@@ -83,7 +84,18 @@ def breadth_first(game):
             print("game is solved")
             break
 
-    print(len(grid_memory))
+    solution = []
+    solution.insert(0, [grid_memory[-1][1][0], grid_memory[-1][1][1]])
+    grid_memory[-1][0]
+    node = grid_memory[-1][1][2]
+
+    while node != 0:
+        print(grid_memory[node][0])
+        solution.insert(0, [grid_memory[node][1][0], grid_memory[node][1][1]])
+        new_node = grid_memory[node][1][2]
+        node = new_node
+    print(grid_memory[node][0])
+    print(solution)
 
 
 def tiles_blocked_heur(game):

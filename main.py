@@ -20,6 +20,7 @@ if __name__ == "__main__":
     game = Board(dimension, filename)
     breadth_first(game)
 
+
     # nr = 10
     # results = []
     # heur_1 = []
