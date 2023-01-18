@@ -6,7 +6,6 @@ import random
 
 def random_only_legal_moves_algorithm(game):
     cars = game.get_cars()
-    carX = cars[len(cars) - 1]
     game.generate_moveability()
     total_moves = 0
 
@@ -22,7 +21,6 @@ def random_only_legal_moves_algorithm(game):
 
 def random_all_moves_algorithm(game):
     cars = game.get_cars()
-    carX = cars[len(cars) - 1]
     total_moves = 0
     direction = ""
 
@@ -66,3 +64,22 @@ def breadth_first(game):
     print(game.cars[0].get_position())
     print(cars)
     print(queue.list)
+
+
+def tiles_blocked_heur(game):
+    cars = game.get_cars()
+    game.generate_moveability()
+    total_moves = 0
+
+    while not game.is_solved():
+        car = random.choice(game.get_moveable_cars())
+        direction = random.choice(car.legal_moves)
+        tiles = game.tiles_blocked()
+        game.move_car(car, direction)
+        if game.tiles_blocked() > tiles:
+            game.undo_move(car, direction)
+        else:
+            total_moves += 1
+        game.generate_moveability()
+
+    return total_moves

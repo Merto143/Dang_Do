@@ -170,9 +170,25 @@ class Board:
                     car.set_coordinates(row + 1, col + 1)
                     added_cars.append(space)
 
+    def undo_move(self, car, direction):
+        if direction == "E":
+            self.move_car(car, "W")
+        elif direction == "W":
+            self.move_car(car, "E")
+        elif direction == "N":
+            self.move_car(car, "S")
+        elif direction == "S":
+            self.move_car(car, "N")
+
 
     def tiles_blocked(self):
-        pass
+        tiles = 0
+        position = self.cars[-1].get_col()
+        for tile in range(position + 2, self.dim):
+            if self.grid[round(self.dim / 2), tile] != "-":
+                tiles += 1
+
+        return tiles
 
 
     def distance_away(self):
