@@ -1,12 +1,11 @@
 from sys import argv
 from codefiles.classes.car import Car
 from codefiles.classes.board import Board
-from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, random_all_moves_algorithm
+from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, random_all_moves_algorithm, breadth_first
 from tqdm import tqdm
 
 
 if __name__ == "__main__":
-
     if len(argv) != 2:
         print("Usage: python3 main.py [filename]")
         exit(1)
@@ -20,12 +19,16 @@ if __name__ == "__main__":
 
     nr = 100
     results = []
-    for i in tqdm(range(nr)):
-        game = Board(dimension, filename)
-        legal_moves = random_only_legal_moves_algorithm(game)
-        results.append(legal_moves)
+    game = Board(dimension, filename)
+    breadth_first(game)
 
-    print(f"{nr} iterations: the lowest number for legal moves is {min(results)} moves.")
+#dit is voor het vinden van het laagste aantal moves na random algoritme
+    # for i in tqdm(range(nr)):
+    #     game = Board(dimension, filename)
+    #     legal_moves = random_only_legal_moves_algorithm(game)
+    #     results.append(legal_moves)
+    #
+    # print(f"{nr} iterations: the lowest number for legal moves is {min(results)} moves.")
 
 
 # dit is wat we hiervoor gebruikten om het een enkele keer te laten runnen

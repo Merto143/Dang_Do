@@ -16,6 +16,7 @@ class Board:
         self.cars: list[Car] = []
         self.grid = np.full((dim, dim), "-")
         self.moveable_cars: list[Car] = []
+        self.visited_states = []
         self.load_cars(f"data/{filename}.csv")
         self.add_cars_to_grid()
 
@@ -41,6 +42,7 @@ class Board:
             for i in range(car.get_length()):
                 space = spaces[i]
                 self.grid[space[0] - 1][space[1] - 1] = car.get_name()
+        self.visited_states.append(self.grid)
 
 
     def visual(self) -> None:

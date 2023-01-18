@@ -1,5 +1,6 @@
 from codefiles.classes.car import Car
 from codefiles.classes.board import Board
+from codefiles.classes.queue import Queue
 import random
 
 
@@ -37,3 +38,29 @@ def random_all_moves_algorithm(game):
         game.move_car(car, direction)
         total_moves += 1
     return total_moves
+
+
+def breadth_first(game):
+    game.generate_moveability()
+    cars = game.get_moveable_cars()
+    memory = []
+    memory.append(game.grid)
+
+    queue = Queue()
+
+    for car in cars:
+        queue.enqueue(car)
+
+    car = queue.dequeue()
+
+    if len(car.legal_moves) == 1:
+        direction = car.legal_moves[0]
+        game.move_car(car, direction)
+
+
+
+
+
+    print(memory)
+    print(cars)
+    print(queue.list)
