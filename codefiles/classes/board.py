@@ -1,24 +1,27 @@
-from car import Car
+from .car import Car
 import numpy as np
-import matplotlib as mpl
+# import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+import math
+
 
 COLORS = {"X" : "#DC3C32", "A" : "#9BC88C", "B" : "#E68C41", "C" : "#5AB9EB", "D" : "#E182A0", "E" : "#6964AA", "F" : "#45966E", "G" : "#AFAFB4", "H" : "#FAE6C8", "I" : "#FFF56E", "J" : "#8C645A", "K" : "#8C8C2D", "L" : "k", "O" : "#FAD24B", "P" : "#9682BE", "Q" : "#3778B4", "R" : "#50AA9B"}
 
-#comment
+
 class Board:
 
     def __init__(self, dim: int, filename: str) -> None:
         self.dim = dim
-        self.cars = []
+        self.cars: list[Car] = []
         self.grid = np.full((dim, dim), "-")
-        self.moveable_cars = []
-        self.load_cars(f"gameboards/{filename}.csv")
+        self.moveable_cars: list[Car] = []
+        self.visited_states = []
+        self.load_cars(f"data/{filename}.csv")
         self.add_cars_to_grid()
 
 
-    def load_cars(self, file):
+    def load_cars(self, file: str) -> None:
         with open(file) as f:
 
             line = f.readline()
@@ -32,7 +35,7 @@ class Board:
                 line = f.readline()
 
 
-    def add_cars_to_grid(self):
+    def add_cars_to_grid(self) -> None:
         for car in self.cars:
             spaces = car.get_car_spaces()
 
@@ -40,9 +43,8 @@ class Board:
                 space = spaces[i]
                 self.grid[space[0] - 1][space[1] - 1] = car.get_name()
 
-        # print(self.grid)
 
-    def visual(self):
+    def visual(self) -> None:
           fig, ax = plt.subplots()
           plt.axis('off')
           plt.xlim([0, self.dim])
@@ -68,20 +70,22 @@ class Board:
 
           plt.show()
 
-    def get_cars(self):
+
+    def get_cars(self) -> list[Car]:
         return self.cars
 
-    def get_moveable_cars(self):
+
+    def get_moveable_cars(self) -> list[Car]:
         return self.moveable_cars
 
-    def move_car(self, car, direction):
+
+    def move_car(self, car: Car, direction: str) -> None:
         if self.car_is_movable(car, direction):
 
             if direction == "E":
                 self.grid[car.get_row() - 1][car.get_col() - 1] = "-"
                 car.set_col(car.get_col() + 1)
                 self.grid[car.get_row() - 1][car.get_col() + car.get_length() - 2] = car.get_name()
-
 
             elif direction == "W":
                 car.set_col(car.get_col() - 1)
@@ -98,14 +102,12 @@ class Board:
                 car.set_row(car.get_row() + 1)
                 self.grid[car.get_row() + car.get_length() - 2][car.get_col() - 1] = car.get_name()
 
-            # print(self.grid)
-
         car.set_coordinates(car.get_row(), car.get_col())
 
 
-    def car_is_movable(self, car, direction):
+    def car_is_movable(self, car: Car, direction: str) -> bool:
         if direction == "E" and car.get_orientation() == "H":
-            if car.get_col() + car.get_length()  <=  6:
+            if car.get_col() + car.get_length() <= self.dim:
                 if self.grid[car.get_row() - 1][car.get_col() + car.get_length() - 1] == "-":
                     return True
 
@@ -120,13 +122,14 @@ class Board:
                     return True
 
         elif direction == "S" and car.get_orientation() == "V":
-            if car.get_row() + car.get_length() <= 6:
+            if car.get_row() + car.get_length() <= self.dim:
                 if self.grid[car.get_row() + car.get_length() - 1][car.get_col() - 1] == "-":
                     return True
 
         return False
 
-    def generate_moveability(self):
+
+    def generate_moveability(self) -> None:
         self.moveable_cars = []
         for car in self.cars:
             car.clear_legal_moves()
@@ -141,3 +144,52 @@ class Board:
                     if self.car_is_movable(car, move):
                         car.add_legal_move(move)
                         self.moveable_cars.append(car)
+
+
+    def is_solved(self) -> bool:
+        red_car = self.cars[-1]
+        if red_car.get_position() == [math.ceil(self.dim / 2), self.dim - 1]:
+            return True
+        return False
+
+    def get_car(self, name):
+        for car in self.cars:
+            if name == car.name:
+                return car
+
+
+    def set_car_coordinates(self):
+        added_cars = []
+        for row in range(self.dim):
+            for col in range(self.dim):
+                space = self.grid[row][col]
+                if  space != "-" and space not in added_cars:
+                    car = self.get_car(space)
+                    car.row = row + 1
+                    car.col = col + 1
+                    car.set_coordinates(row + 1, col + 1)
+                    added_cars.append(space)
+
+    def undo_move(self, car, direction):
+        if direction == "E":
+            self.move_car(car, "W")
+        elif direction == "W":
+            self.move_car(car, "E")
+        elif direction == "N":
+            self.move_car(car, "S")
+        elif direction == "S":
+            self.move_car(car, "N")
+
+
+    def tiles_blocked(self):
+        tiles = 0
+        position = self.cars[-1].get_col()
+        for tile in range(position + 2, self.dim):
+            if self.grid[round(self.dim / 2), tile] != "-":
+                tiles += 1
+
+        return tiles
+
+
+    def distance_away(self):
+        pass
