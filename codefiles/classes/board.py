@@ -181,15 +181,34 @@ class Board:
             self.move_car(car, "N")
 
 
-    def tiles_blocked(self):
-        tiles = 0
-        position = self.cars[-1].get_col()
-        for tile in range(position + 2, self.dim):
-            if self.grid[round(self.dim / 2), tile] != "-":
-                tiles += 1
+    def get_all_moves(self): -> list[list[Car,str]]:
+        moves = []
+        for car in get_moveable_cars():
+            for direction in car.get_legal_moves():
+                move = [car, direction]
+                moves.append(move)
+        return moves
 
-        return tiles
+
+    def tiles_blocked(self):
+        red_car = cars[-1]
+        occupied = 0
+        position = self.cars[-1].get_col()
+        for tile in range(position + 1, self.dim):
+            if self.grid[red_car.get_row() - 1, tile] != "-":
+                occupied += 1
+
+        return occupied
 
 
     def distance_away(self):
-        pass
+        position = self.cars[-1].get_col()
+        distance = self.dim - (position + 1)
+
+        return distance
+
+
+    def apply_score(self):
+        score = self.tiles_blocked() + self.distance_away()
+
+        return score
