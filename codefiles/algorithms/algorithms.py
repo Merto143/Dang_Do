@@ -115,3 +115,38 @@ def tiles_blocked_heur(game):
         game.generate_moveability()
 
     return total_moves
+
+def distance_to_exit_heur(game):
+    carX = game.get_cars()[-1]
+    return 6 - carX.get_column() + 1
+
+def upperright_trucks_heur(game):
+    totalscore = 0
+    cars = game.get_cars()
+
+    for car in cars:
+        if car.get_length() == 3 and car.get_orientation() == "V":
+            score = car.get_col() + (4 - car.get_row())
+        totalscore += score
+
+def exit_blocks_heur(game):
+    # Only the cars that block X (not how those cars are blocked)
+    cars = game.get_cars()
+    carX = game.get_cars()[-1]
+    amount = 0
+
+    for car in cars:
+        if car.get_orientation == "V":
+            vertical_positions = []
+
+            for i in range(car.get_length):
+                vertical_positions.append(car.get_row() + i)
+
+            if car.get_col() > carX.get_col() + 1 and if carX.get_row() in vertical_positions:
+                amount += 1
+
+
+
+def objective(game):
+    # Minimize
+    return tiles_blocked_heur(game) + distance_to_exit_heur(game) + upperright_trucks_heur(game) - exit_blocks_heur(game)
