@@ -3,6 +3,7 @@ from codefiles.classes.car import Car
 from codefiles.classes.board import Board
 from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, random_all_moves_algorithm
 from codefiles.algorithms.algorithms import breadth_first, tiles_blocked_heur
+from codefiles.algorithms.depth_first import DepthFirst
 from tqdm import tqdm
 
 
@@ -18,7 +19,9 @@ if __name__ == "__main__":
         else:
             dimension = int(filename[8])
     game = Board(dimension, filename)
-    breadth_first(game)
+    df = DepthFirst(game)
+
+    df.run()
 
 
     # nr = 10

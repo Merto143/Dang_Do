@@ -170,6 +170,7 @@ class Board:
                     car.set_coordinates(row + 1, col + 1)
                     added_cars.append(space)
 
+
     def undo_move(self, car, direction):
         if direction == "E":
             self.move_car(car, "W")
@@ -181,12 +182,17 @@ class Board:
             self.move_car(car, "N")
 
 
-    def get_all_moves(self): -> list[list[Car,str]]:
+    def get_all_moves(self) -> list[list[Car,str]]:
         moves = []
-        for car in get_moveable_cars():
+        self.generate_moveability()
+        print(f"We have {len(self.moveable_cars)} moveable cars")
+        for car in self.get_moveable_cars():
+            print(car)
             for direction in car.get_legal_moves():
+                print(direction)
                 move = [car, direction]
                 moves.append(move)
+        print(f"this turn has options: {moves}")
         return moves
 
 
@@ -208,7 +214,7 @@ class Board:
         return distance
 
 
-    def apply_score(self):
+    def object_function(self):
         score = self.tiles_blocked() + self.distance_away()
 
         return score

@@ -144,7 +144,7 @@ def exit_blocks_heur(game):
             for i in range(car.get_length):
                 vertical_positions.append(car.get_row() + i)
 
-            if car.get_col() > carX.get_col() + 1 and if carX.get_row() in vertical_positions:
+            if car.get_col() > carX.get_col() + 1 and carX.get_row() in vertical_positions:
                 amount += 1
 
     return amount
