@@ -98,23 +98,23 @@ def breadth_first(game):
     print(solution)
 
 
-def tiles_blocked_heur(game):
-    cars = game.get_cars()
-    game.generate_moveability()
-    total_moves = 0
-
-    while not game.is_solved():
-        car = random.choice(game.get_moveable_cars())
-        direction = random.choice(car.legal_moves)
-        tiles = game.tiles_blocked()
-        game.move_car(car, direction)
-        if game.tiles_blocked() > tiles:
-            game.undo_move(car, direction)
-        else:
-            total_moves += 1
-        game.generate_moveability()
-
-    return total_moves
+# def tiles_blocked_heur(game):
+#     cars = game.get_cars()
+#     game.generate_moveability()
+#     total_moves = 0
+#
+#     while not game.is_solved():
+#         car = random.choice(game.get_moveable_cars())
+#         direction = random.choice(car.legal_moves)
+#         tiles = game.tiles_blocked()
+#         game.move_car(car, direction)
+#         if game.tiles_blocked() > tiles:
+#             game.undo_move(car, direction)
+#         else:
+#             total_moves += 1
+#         game.generate_moveability()
+#
+#     return total_moves
 
 def distance_to_exit_heur(game):
     carX = game.get_cars()[-1]
@@ -131,23 +131,23 @@ def upperright_trucks_heur(game):
 
     return totalscore
 
-def exit_blocks_heur(game):
-    # Only the cars that block X (not how those cars are blocked)
-    cars = game.get_cars()
-    carX = game.get_cars()[-1]
-    amount = 0
-
-    for car in cars:
-        if car.get_orientation == "V":
-            vertical_positions = []
-
-            for i in range(car.get_length):
-                vertical_positions.append(car.get_row() + i)
-
-            if car.get_col() > carX.get_col() + 1 and if carX.get_row() in vertical_positions:
-                amount += 1
-
-    return amount
+# def exit_blocks_heur(game):
+#     # Only the cars that block X (not how those cars are blocked)
+#     cars = game.get_cars()
+#     carX = game.get_cars()[-1]
+#     amount = 0
+#
+#     for car in cars:
+#         if car.get_orientation == "V":
+#             vertical_positions = []
+#
+#             for i in range(car.get_length):
+#                 vertical_positions.append(car.get_row() + i)
+#
+#             if car.get_col() > carX.get_col() + 1 and if carX.get_row() in vertical_positions:
+#                 amount += 1
+#
+#     return amount
 
 
 def objective(game):

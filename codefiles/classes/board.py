@@ -4,9 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import math
+from colorhash import ColorHash
 
 
-COLORS = {"X" : "#DC3C32", "A" : "#9BC88C", "B" : "#E68C41", "C" : "#5AB9EB", "D" : "#E182A0", "E" : "#6964AA", "F" : "#45966E", "G" : "#AFAFB4", "H" : "#FAE6C8", "I" : "#FFF56E", "J" : "#8C645A", "K" : "#8C8C2D", "L" : "k", "O" : "#FAD24B", "P" : "#9682BE", "Q" : "#3778B4", "R" : "#50AA9B"}
+# COLORS = {"X" : "#DC3C32", "A" : "#9BC88C", "B" : "#E68C41", "C" : "#5AB9EB", "D" : "#E182A0", "E" : "#6964AA", "F" : "#45966E", "G" : "#AFAFB4", "H" : "#FAE6C8", "I" : "#FFF56E", "J" : "#8C645A", "K" : "#8C8C2D", "L" : "k", "O" : "#FAD24B", "P" : "#9682BE", "Q" : "#3778B4", "R" : "#50AA9B"}
 
 
 class Board:
@@ -17,6 +18,7 @@ class Board:
         self.grid = np.full((dim, dim), "-")
         self.moveable_cars: list[Car] = []
         self.visited_states = []
+        self.color_dict = {}
         self.load_cars(f"data/{filename}.csv")
         self.add_cars_to_grid()
 
@@ -33,6 +35,10 @@ class Board:
                 self.cars.append(car)
 
                 line = f.readline()
+
+            for car in self.cars:
+                self.color_dict[car.get_name()] = ColorHash(car.get_name()).hex
+                self.color_dict["X"] = "r"
 
 
     def add_cars_to_grid(self) -> None:
@@ -56,13 +62,13 @@ class Board:
 
           for car in self.cars:
               if car.get_orientation() == "H":
-                  vehicle = Rectangle((car.get_col() - 1, self.dim - car.get_row()), width = car.get_length(), height = 1, color = COLORS[car.get_name()], zorder = 2)
+                  vehicle = Rectangle((car.get_col() - 1, self.dim - car.get_row()), width = car.get_length(), height = 1, color = self.color_dict[car.get_name()], zorder = 2)
                   x = vehicle.get_xy()[0] + vehicle.get_width()/2
                   y = vehicle.get_xy()[1] + vehicle.get_height()/2
                   ax.annotate(car.get_name(), (x, y), color = 'w', fontsize = 15, ha = 'center', va = 'center')
                   ax.add_patch(vehicle)
               else:
-                  vehicle = Rectangle((car.get_col() - 1, self.dim - car.get_row() + 1), width = 1, height = -car.get_length(), color = COLORS[car.get_name()], zorder = 2)
+                  vehicle = Rectangle((car.get_col() - 1, self.dim - car.get_row() + 1), width = 1, height = -car.get_length(), color = self.color_dict[car.get_name()], zorder = 2)
                   x = vehicle.get_xy()[0] + vehicle.get_width()/2
                   y = vehicle.get_xy()[1] + vehicle.get_height()/2
                   ax.annotate(car.get_name(), (x, y), color = 'w', fontsize = 15, ha = 'center', va = 'center')
@@ -181,7 +187,7 @@ class Board:
             self.move_car(car, "N")
 
 
-    def get_all_moves(self): -> list[list[Car,str]]:
+    def get_all_moves(self) -> list[list[Car,str]]:
         moves = []
         for car in get_moveable_cars():
             for direction in car.get_legal_moves():
