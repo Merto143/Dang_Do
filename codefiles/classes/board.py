@@ -22,6 +22,14 @@ class Board:
         self.load_cars(f"data/{filename}.csv")
         self.add_cars_to_grid()
 
+    def get_dim(self):
+        return self.dim
+
+    def get_cars(self):
+        return self.cars
+
+    def get_color_dict(self):
+        return self.color_dict
 
     def load_cars(self, file: str) -> None:
         with open(file) as f:
@@ -48,33 +56,6 @@ class Board:
             for i in range(car.get_length()):
                 space = spaces[i]
                 self.grid[space[0] - 1][space[1] - 1] = car.get_name()
-
-
-    def visual(self) -> None:
-          fig, ax = plt.subplots()
-          plt.axis('off')
-          plt.xlim([0, self.dim])
-          plt.ylim([0, self.dim])
-
-          for i in range(0,self.dim + 1):
-              plt.axvline(x = i, color = "0.55")
-              plt.axhline(y = i, color = "0.55")
-
-          for car in self.cars:
-              if car.get_orientation() == "H":
-                  vehicle = Rectangle((car.get_col() - 1, self.dim - car.get_row()), width = car.get_length(), height = 1, color = self.color_dict[car.get_name()], zorder = 2)
-                  x = vehicle.get_xy()[0] + vehicle.get_width()/2
-                  y = vehicle.get_xy()[1] + vehicle.get_height()/2
-                  ax.annotate(car.get_name(), (x, y), color = 'w', fontsize = 15, ha = 'center', va = 'center')
-                  ax.add_patch(vehicle)
-              else:
-                  vehicle = Rectangle((car.get_col() - 1, self.dim - car.get_row() + 1), width = 1, height = -car.get_length(), color = self.color_dict[car.get_name()], zorder = 2)
-                  x = vehicle.get_xy()[0] + vehicle.get_width()/2
-                  y = vehicle.get_xy()[1] + vehicle.get_height()/2
-                  ax.annotate(car.get_name(), (x, y), color = 'w', fontsize = 15, ha = 'center', va = 'center')
-                  ax.add_patch(vehicle)
-
-          plt.show()
 
 
     def get_cars(self) -> list[Car]:
