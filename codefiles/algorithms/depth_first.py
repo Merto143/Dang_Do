@@ -3,7 +3,7 @@ import numpy as np
 
 class DepthFirst:
     def __init__(self, game):
-        self.board = copy.deepcopy(game)
+        self.board = game
         self.board.generate_moveability()
 
         self.states = [copy.deepcopy(self.board)]
