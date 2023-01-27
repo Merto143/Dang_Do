@@ -3,13 +3,12 @@ from codefiles.classes.car import Car
 from codefiles.classes.board import Board
 from codefiles.visualisations.visuals import *
 from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, random_all_moves_algorithm
-<<<<<<< HEAD
-from codefiles.algorithms.algorithms import breadth_first, tiles_blocked_heur
-from codefiles.algorithms.depth_first import DepthFirst
-=======
 from codefiles.algorithms.algorithms import breadth_first
->>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
+from codefiles.algorithms.depth_first import DepthFirst
+from codefiles.algorithms.breadth_first import BreadthFirst
 from tqdm import tqdm
+import time
+
 
 
 if __name__ == "__main__":
@@ -27,17 +26,22 @@ if __name__ == "__main__":
         else:
             dimension = int(filename[8])
     game = Board(dimension, filename)
-<<<<<<< HEAD
-    df = DepthFirst(game)
+# <<<<<<< HEAD
+#     df = DepthFirst(game)
+#
+#     df.run()
+# =======
+#     grid_visual(game)
+#     # breadth_first(game)
+#
+# >>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
 
-    df.run()
-=======
-    grid_visual(game)
-    # breadth_first(game)
+    start = time.time()
+    Breadth_first = BreadthFirst(game)
+    Breadth_first.run()
+    end = time.time()
 
->>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
-
-
+    print(f"It took {end - start} seconds to run the program")
     # nr = 10
     # results = []
     # heur_1 = []
