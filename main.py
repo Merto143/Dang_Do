@@ -6,6 +6,8 @@ from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, r
 from codefiles.algorithms.algorithms import breadth_first
 from codefiles.algorithms.depth_first import DepthFirst
 from codefiles.algorithms.breadth_first import BreadthFirst
+from codefiles.algorithms.breadth_first_random_states import BreadthFirstRandomStates
+
 from tqdm import tqdm
 import time
 
@@ -35,13 +37,36 @@ if __name__ == "__main__":
 #     # breadth_first(game)
 #
 # >>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
-
+    print("BreadthFirst:")
     start = time.time()
     Breadth_first = BreadthFirst(game)
     Breadth_first.run()
     end = time.time()
 
-    print(f"It took {end - start} seconds to run the program")
+    print(f"It took {end - start} seconds to run the BreadthFirst algorithm")
+    print()
+
+
+    game = Board(dimension, filename)
+
+    print("BreadthFirstRandomStates:")
+    start = time.time()
+    Breadth_first_random_states = BreadthFirstRandomStates(game)
+    Breadth_first_random_states.run()
+    end = time.time()
+
+    print(f"It took {end - start} seconds to run the BreadthFirstRandomStates algorithm")
+    print()
+    
+
+    print("Now random:")
+    game = Board(dimension, filename)
+    start = time.time()
+    random_only_legal_moves_algorithm(game)
+    end = time.time()
+
+    print(f"It took {end - start} seconds to run the random algorithm")
+
     # nr = 10
     # results = []
     # heur_1 = []
@@ -62,9 +87,9 @@ if __name__ == "__main__":
 # dit is wat we hiervoor gebruikten om het een enkele keer te laten runnen
     # game = Board(dimension, filename)
     # game.visual()
-    all_moves = random_all_moves_algorithm(game)
-    game = Board(dimension, filename)
-    legal_moves = random_only_legal_moves_algorithm(game)
-
-    print(f"All moves: {all_moves} try's to solve the problem")
-    print(f"Legal moves: {legal_moves} try's to solve the problem")
+    # all_moves = random_all_moves_algorithm(game)
+    # game = Board(dimension, filename)
+    # legal_moves = random_only_legal_moves_algorithm(game)
+    #
+    # print(f"All moves: {all_moves} try's to solve the problem")
+    # print(f"Legal moves: {legal_moves} try's to solve the problem")

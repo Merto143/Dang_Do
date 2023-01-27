@@ -61,7 +61,7 @@ class BreadthFirst:
 
     def add_state_to_memory(self):
         self.move_memory.append(self.move)
-        self.grid_memory.append([copy.deepcopy(self.game.grid), self.move])
+        self.grid_memory.append([self.game.grid, self.move])
 
     def enque_movable_cars(self):
         for car in self.cars:
