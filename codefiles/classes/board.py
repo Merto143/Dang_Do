@@ -19,6 +19,7 @@ class Board:
         self.moveable_cars: list[Car] = []
         self.visited_states = []
         self.color_dict = {}
+        self.filename = filename
         self.load_cars(f"data/{filename}.csv")
         self.add_cars_to_grid()
 

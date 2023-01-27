@@ -9,6 +9,8 @@ def random_only_legal_moves_algorithm(game):
     cars = game.get_cars()
     game.generate_moveability()
     total_moves = 0
+    random_memory = []
+    random_memory.append(copy.deepcopy(game.grid))
 
     while not game.is_solved():
         car = random.choice(game.get_moveable_cars())
@@ -16,8 +18,6 @@ def random_only_legal_moves_algorithm(game):
         game.move_car(car, direction)
         total_moves += 1
         game.generate_moveability()
-
-    return total_moves
 
 
 def random_all_moves_algorithm(game):
@@ -40,60 +40,8 @@ def random_all_moves_algorithm(game):
 
 
 def breadth_first(game):
-    game.generate_moveability()
-
-    grid_memory = []
-    move_memory = []
-    grid = copy.deepcopy(game.grid)
-    grid_memory.append([grid, "-"])
-
-    node = 0
-    queue = Queue()
-
-    carX = game.get_cars()[-1]
-    cars = game.get_moveable_cars()
-
-    for car in cars:
-        for direction in car.get_legal_moves():
-            move = [car, direction, node]
-            queue.enqueue(move)
-
-    while (queue.list != []):
-        move = queue.dequeue()
-        game.grid = copy.deepcopy(grid_memory[move[-1]][0])
-        game.set_car_coordinates()
-
-        game.move_car(move[0], move[1])
-        memories = list(zip(*grid_memory))[0]
-
-        if not any(np.array_equal(game.grid, item) for item in memories):
-            move_memory.append(move)
-            grid_memory.append([copy.deepcopy(game.grid), move])
-            node += 1
-
-            game.generate_moveability()
-            cars = game.get_moveable_cars()
-
-            for car in cars:
-                for direction in car.get_legal_moves():
-                    new_move = [car, direction, node]
-                    queue.enqueue(new_move)
 
 
-        if game.is_solved():
-            print("game is solved")
-            break
-
-    solution = []
-    solution.insert(0, [grid_memory[-1][1][0], grid_memory[-1][1][1]])
-    grid_memory[-1][0]
-    node = grid_memory[-1][1][2]
-
-    while node != 0:
-        print(grid_memory[node][0])
-        solution.insert(0, [grid_memory[node][1][0], grid_memory[node][1][1]])
-        new_node = grid_memory[node][1][2]
-        node = new_node
     print(grid_memory[node][0])
     print(solution)
 
@@ -132,6 +80,7 @@ def upperright_trucks_heur(game):
     return totalscore
 
 # <<<<<<< HEAD
+# <<<<<<< HEAD
 def exit_blocks_heur(game):
     # Only the cars that block X (not how those cars are blocked)
     cars = game.get_cars()
@@ -150,6 +99,8 @@ def exit_blocks_heur(game):
 
     return amount
 # =======
+# =======
+# >>>>>>> 6942ac0e35e05b8a2652ec1ff117b580a12e4cff
 # def exit_blocks_heur(game):
 #     # Only the cars that block X (not how those cars are blocked)
 #     cars = game.get_cars()
@@ -167,8 +118,6 @@ def exit_blocks_heur(game):
 #                 amount += 1
 #
 #     return amount
-# >>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
-
 
 def objective(game):
     # Minimize
