@@ -3,20 +3,15 @@ from codefiles.classes.car import Car
 from codefiles.classes.board import Board
 # from codefiles.visualisations.visuals import *
 from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, random_all_moves_algorithm
-<<<<<<< HEAD
-# <<<<<<< HEAD
 from codefiles.algorithms.algorithms import breadth_first
 from codefiles.algorithms.depth_first import DepthFirst
 # =======
 from codefiles.algorithms.algorithms import breadth_first
-# >>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
-=======
 from codefiles.algorithms.algorithms import breadth_first
 from codefiles.algorithms.depth_first import DepthFirst
 from codefiles.algorithms.breadth_first import BreadthFirst
 from codefiles.algorithms.breadth_first_random_states import BreadthFirstRandomStates
 
->>>>>>> 6942ac0e35e05b8a2652ec1ff117b580a12e4cff
 from tqdm import tqdm
 import time
 
@@ -37,20 +32,16 @@ if __name__ == "__main__":
         else:
             dimension = int(filename[8])
     game = Board(dimension, filename)
-# <<<<<<< HEAD
-<<<<<<< HEAD
     df = DepthFirst(game)
 
     df.run2()
 
     # bf = breadth_first(game)
     # bf.run()
-# =======
     # grid_visual(game)
     # breadth_first(game)
 
 # >>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
-=======
 #     df = DepthFirst(game)
 #
 #     df.run()
@@ -86,7 +77,6 @@ if __name__ == "__main__":
     start = time.time()
     random_only_legal_moves_algorithm(game)
     end = time.time()
->>>>>>> 6942ac0e35e05b8a2652ec1ff117b580a12e4cff
 
     print(f"It took {end - start} seconds to run the random algorithm")
 

@@ -11,7 +11,7 @@ class DepthFirst:
         self.states = [[copy.deepcopy(self.board.grid), "-"]]
         self.moves = []
 
-        self.grid_memory = []
+        self.grid_memory = [[copy.deepcopy(self.board.grid), "-"]]
         self.move_memory = []
 
         self.solution = []
@@ -21,10 +21,12 @@ class DepthFirst:
 
 
     def get_next_state(self):
-        return self.states.pop()
+        if self.states:
+            return self.states.pop()
 
     def get_next_move(self):
-        return self.moves.pop()
+        if self.moves:
+            return self.moves.pop()
 
 
     # def any_moves_pruned(self, game):
@@ -94,24 +96,35 @@ class DepthFirst:
 
     def run2(self):
 
+        print(f"the begin grid looks like: {self.board.grid}")
         i = 1
-        while self.states:
-        # for j in range(7):
+        k = 1
+        # while self.states:
+        for j in range(10):
             new_state = self.get_next_state()
             new_move = self.get_next_move()
             self.board.grid = copy.deepcopy(new_state[0])
             self.board.set_car_coordinates()
 
             self.board.move_car(new_move[0], new_move[1])
-            # self.memory = list(zip(*self.states))[0]
+            print(f"{self.grid_memory}, is this list empty?")
+            self.history = list(zip(*self.grid_memory))[0]
 
-            if not any(np.array_equal(self.board.grid, state[0]) for state in self.states):
+            if not any(np.array_equal(self.board.grid, state) for state in self.history):
+                print(f"State number {k}")
+                k += 1
+                print(f"state has not been seen yet")
                 self.moves.append(new_move)
                 self.states.append([copy.deepcopy(self.board.grid), new_move])
+                self.grid_memory.append(new_state[0])
                 self.node += 1
 
                 self.board.generate_moveability()
                 self.stack_moves()
+            else:
+                print("\n\n\n")
+                print(f"Move: {new_move}, state has already been seen, don't save")
+                print("\n\n\n")
 
             if self.board.is_solved():
                 print(f"Solution {i}")
@@ -137,5 +150,6 @@ class DepthFirst:
     def stack_moves(self):
             for car in self.board.get_moveable_cars():
                 for direction in car.get_legal_moves():
+                    self.node += 1
                     new_move = [car, direction, self.node]
                     self.moves.append(new_move)
