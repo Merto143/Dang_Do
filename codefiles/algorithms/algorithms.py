@@ -131,7 +131,7 @@ def upperright_trucks_heur(game):
 
     return totalscore
 
-<<<<<<< HEAD
+# <<<<<<< HEAD
 def exit_blocks_heur(game):
     # Only the cars that block X (not how those cars are blocked)
     cars = game.get_cars()
@@ -149,7 +149,7 @@ def exit_blocks_heur(game):
                 amount += 1
 
     return amount
-=======
+# =======
 # def exit_blocks_heur(game):
 #     # Only the cars that block X (not how those cars are blocked)
 #     cars = game.get_cars()
@@ -167,7 +167,7 @@ def exit_blocks_heur(game):
 #                 amount += 1
 #
 #     return amount
->>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
+# >>>>>>> 9a71f9c505a2c9e0b5b735b33d08007da6afb0bc
 
 
 def objective(game):

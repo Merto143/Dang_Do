@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import math
-from colorhash import ColorHash
+# from colorhash import ColorHash
 
 
 # COLORS = {"X" : "#DC3C32", "A" : "#9BC88C", "B" : "#E68C41", "C" : "#5AB9EB", "D" : "#E182A0", "E" : "#6964AA", "F" : "#45966E", "G" : "#AFAFB4", "H" : "#FAE6C8", "I" : "#FFF56E", "J" : "#8C645A", "K" : "#8C8C2D", "L" : "k", "O" : "#FAD24B", "P" : "#9682BE", "Q" : "#3778B4", "R" : "#50AA9B"}
@@ -44,9 +44,9 @@ class Board:
 
                 line = f.readline()
 
-            for car in self.cars:
-                self.color_dict[car.get_name()] = ColorHash(car.get_name()).hex
-                self.color_dict["X"] = "r"
+            # for car in self.cars:
+            #     self.color_dict[car.get_name()] = ColorHash(car.get_name()).hex
+            #     self.color_dict["X"] = "r"
 
 
     def add_cars_to_grid(self) -> None:
