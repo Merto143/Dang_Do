@@ -1,11 +1,13 @@
 from codefiles.classes.car import Car
 from codefiles.classes.board import Board
 from codefiles.classes.queue import Queue
+from codefiles.visualisations.visuals import *
 import random
 import copy
 import numpy as np
 
 def random_only_legal_moves_algorithm(game):
+    grid_visual(game)
     cars = game.get_cars()
     game.generate_moveability()
     total_moves = 0
@@ -13,11 +15,15 @@ def random_only_legal_moves_algorithm(game):
     random_memory.append(copy.deepcopy(game.grid))
 
     while not game.is_solved():
+        # grid_visual(game)
         car = random.choice(game.get_moveable_cars())
         direction = random.choice(car.legal_moves)
         game.move_car(car, direction)
         total_moves += 1
         game.generate_moveability()
+    grid_visual(game)
+
+    return total_moves
 
 
 def random_all_moves_algorithm(game):
