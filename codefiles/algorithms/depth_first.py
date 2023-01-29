@@ -11,7 +11,7 @@ class DepthFirst:
         self.states = [[copy.deepcopy(self.board.grid), "-"]]
         self.moves = []
 
-        self.grid_memory = [[copy.deepcopy(self.board.grid), "-"]]
+        self.archive = [[copy.deepcopy(self.board.grid), "-"]]
         self.move_memory = []
 
         self.solution = []
@@ -19,28 +19,45 @@ class DepthFirst:
         self.cars = self.board.get_moveable_cars()
         self.stack_moves()
 
+        self.visited = []
+        self.stack = [copy.deepcopy(self.board)]
 
-    def get_next_state(self):
+
+    def run3(self):
+                # while self.stack:
+        for i in range(1,5):
+            current_state = self.stack.pop()
+            current_state.generate_moveability()
+            print(f"Iteration {i}")
+            print(f"Current state: \n {current_state.grid} \n\n")
+
+            print(f"Current state has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
+            print(f"{current_state.grid} has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}\n")
+            if not any(np.array_equal(current_state.grid, state) for state in self.visited):
+                self.visited.append(copy.deepcopy(current_state.grid))
+                moves = self.create_moves(current_state)
+                print(moves)
+                for move in moves:
+                    print(f"{move} is {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
+                    current_state.move_car(move[0], move[1])
+                    current_state.set_car_coordinates()
+                    print(f"{current_state.grid} has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
+                    if not any(np.array_equal(current_state.grid, state) for state in self.visited):
+                        self.stack.append(copy.deepcopy(current_state))
+                        print(f"{self.stack[-1].grid} is the last added state")
+                    current_state.undo_move(move[0], move[1])
+            print(f"Stack: {self.stack}")
+            print(f"Visited States:{self.visited}")
+            print("\n\n\n\n\n")
+
+
+    def get_next_move(self):
         if self.states:
             return self.states.pop()
 
-    def get_next_move(self):
-        if self.moves:
-            return self.moves.pop()
-
-
-    # def any_moves_pruned(self, game):
-    #     options = game.get_all_moves()
-    #
-    #     for option in options:
-    #         new_state = copy.deepcopy(game)
-    #         new_state.move_car(option[0], option[1])
-    #         # if new_state not in self.states:
-    #         if not any(np.array_equal(new_state.grid, state.grid) for state in self.states):
-    #             print(f"{option}")
-    #             print(f"{new_state.grid}")
-    #             return option
-    #     return None
+    # def get_next_move(self):
+    #     if self.moves:
+    #         return self.moves.pop()
 
 
     def build_children(self, game):
@@ -56,17 +73,6 @@ class DepthFirst:
                 print(f"{option}")
                 print(f"{new_state.grid}")
 
-
-        # if not any(np.array_equal(new_state.grid, state.grid) for state in self.states):
-        #     game.generate_moveability()
-        #
-        #     for car in game.get_moveable_cars():
-        #         for direction in car.get_legal_moves():
-        #             new_move = [car, direction]
-        #
-        #             if not
-        #             self.moves.append(new_move)
-
     def check_solution(self, game):
         sol = []
         print("We have a solution")
@@ -74,24 +80,38 @@ class DepthFirst:
 
 
     def run(self):
+        i = 1
         print(f"{self.states[0][0]}")
 
         while self.states:
-            new_state = self.get_next_state()
-            print(new_state[0])
+            new_state = self.get_next_move()
+            print(new_state)
+            print(f"Before moving car: {self.board.grid}")
             self.board.set_car_coordinates()
+            self.board.move_car(new_state[0], new_state[1])
+            print(f"After moving car: {self.board.grid}")
 
-            # nodes = self.any_moves_pruned(new_state)
+            self.history = list(zip(*self.archive))[0]
 
-            if not self.board.is_solved():
-                self.build_children(new_state)
-                print("\n\n")
+            if not any(np.array_equal(self.board.grid, state) for state in self.history):
+                print(f"State number {i}")
+                print(f"{self.board.grid} is a new state")
+                i += 1
+
+            if self.board.is_solved():
+                pass
             else:
-                self.check_solution(new_state)
-                print("Game is solved")
+                pass
 
-
-        print(f"{self.states[0].grid}")
+        #     if not self.board.is_solved():
+        #         self.build_children(new_state)
+        #         print("\n\n")
+        #     else:
+        #         self.check_solution(new_state)
+        #         print("Game is solved")
+        #
+        #
+        # print(f"{self.states[0].grid}")
 
 
     def run2(self):
@@ -101,14 +121,15 @@ class DepthFirst:
         k = 1
         # while self.states:
         for j in range(10):
-            new_state = self.get_next_state()
             new_move = self.get_next_move()
-            self.board.grid = copy.deepcopy(new_state[0])
+            print(f"Next in stack: {new_move[-1]}")
+            print(f"Grid memory: {self.archive[-1][0]}")
+            self.board.grid = copy.deepcopy(self.archive[new_move[-1]][0])
             self.board.set_car_coordinates()
 
             self.board.move_car(new_move[0], new_move[1])
-            print(f"{self.grid_memory}, is this list empty?")
-            self.history = list(zip(*self.grid_memory))[0]
+            print(f"{self.archive}, is this list empty?")
+            self.history = list(zip(*self.archive))[0]
 
             if not any(np.array_equal(self.board.grid, state) for state in self.history):
                 print(f"State number {k}")
@@ -116,7 +137,7 @@ class DepthFirst:
                 print(f"state has not been seen yet")
                 self.moves.append(new_move)
                 self.states.append([copy.deepcopy(self.board.grid), new_move])
-                self.grid_memory.append(new_state[0])
+                self.archive.append(new_state[0])
                 self.node += 1
 
                 self.board.generate_moveability()
@@ -131,11 +152,11 @@ class DepthFirst:
                 i += 1
                 break
             else:
-                print(f"{self.board.grid}")
+                print(f"Current node: {self.board.grid}")
                 print("\n\n")
-                print(f"{self.moves}")
+                print(f"All moves in the list: {self.moves}")
                 print("\n\n")
-                print(f"{self.states}")
+                print(f"All states/grids in the list: {self.states}")
                 print("\n\n")
 
 
@@ -146,10 +167,18 @@ class DepthFirst:
             #     self.check_solution(new_state)
             #     print(f"Game is solved with in total {len(self.check_solution())} steps")
 
+    def create_moves(self, game):
+        moves = []
+        for car in game.get_moveable_cars():
+            for direction in car.get_legal_moves():
+                self.node += 1
+                new_move = [car, direction, self.node]
+                moves.append(new_move)
+        return moves
 
     def stack_moves(self):
             for car in self.board.get_moveable_cars():
                 for direction in car.get_legal_moves():
                     self.node += 1
                     new_move = [car, direction, self.node]
-                    self.moves.append(new_move)
+                    self.states.append(new_move)

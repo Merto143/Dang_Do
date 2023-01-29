@@ -34,7 +34,7 @@ if __name__ == "__main__":
     game = Board(dimension, filename)
     df = DepthFirst(game)
 
-    df.run2()
+    df.run3()
 
     # bf = breadth_first(game)
     # bf.run()
