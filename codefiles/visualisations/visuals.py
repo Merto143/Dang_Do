@@ -39,25 +39,30 @@ def write_random(time, iterations, dim):
         writer = csv.writer(f)
         writer.writerow([time, iterations, dim])
 
-# def write_breath():
+# def write_breath(time, path):
 #
-# def write_breadth_random():
+# def write_breadth_random(time, length):
 #
-# def write_depth():
+# def write_depth(time, iterations, length):
 #
-# def write_beam():
+# def write_beam(time, iterations, length):
 
 
 
-def load_statistics(algorithm):
+def load_statistics(algorithm, dimension):
+    data = []
     with open(f"data/{algorithm}.csv", 'r') as f:
-        next(f)
+        line = f.readline()
         for line in f:
-            f.readline().split()
-        data = [line[0], line[1]]
+            list = line.strip().split(",")
+            if list[2] == dimension:
+                data.append([float(list[0]), int(list[1])])
+    return data
 
 
-def stat(algorithm):
-    for stats in data:
-        if data[stats][0] == algorithm:
-            fig, ax = plt.subplot()
+def stat(algorithm, data):
+    iterations = []
+    for i in range(len(data)):
+        iterations.append(data[i][1])
+    plt.hist(iterations)
+    plt.show()
