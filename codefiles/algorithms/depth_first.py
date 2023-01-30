@@ -21,35 +21,46 @@ class DepthFirst:
 
         self.visited = []
         self.stack = [copy.deepcopy(self.board)]
+        self.made_moves = []
 
 
     def run3(self):
-                # while self.stack:
-        for i in range(1,5):
+        i = 1
+        while self.stack:
+        # for i in range(1, 100):
             current_state = self.stack.pop()
             current_state.generate_moveability()
             print(f"Iteration {i}")
-            print(f"Current state: \n {current_state.grid} \n\n")
+            # print(f"Current state: \n {current_state.grid} \n\n")
 
-            print(f"Current state has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
-            print(f"{current_state.grid} has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}\n")
+            if current_state.is_solved():
+                print("We have found a solution!")
+                break
+
+
+            # print(f"Current state has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
+            # print(f"{current_state.grid} has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}\n")
             if not any(np.array_equal(current_state.grid, state) for state in self.visited):
                 self.visited.append(copy.deepcopy(current_state.grid))
                 moves = self.create_moves(current_state)
-                print(moves)
+                # print(moves)
                 for move in moves:
-                    print(f"{move} is {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
+                    # print(f"{move} is {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
                     current_state.move_car(move[0], move[1])
                     current_state.set_car_coordinates()
-                    print(f"{current_state.grid} has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
+                    # print(f"{current_state.grid} has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
                     if not any(np.array_equal(current_state.grid, state) for state in self.visited):
                         self.stack.append(copy.deepcopy(current_state))
-                    print(f"{self.stack[-1].grid} is the last added state")
+                        self.made_moves.append(move)
+                    # print(f"{self.stack[-1].grid} is the last added state")
                     current_state.undo_move(move[0], move[1])
-            print(f"Stack: {self.stack}")
-            print(f"Visited States:{self.visited}")
-            print("\n\n\n\n\n")
-
+            # print(f"Stack: {self.stack}")
+            # print(f"Visited States:{self.visited}")
+            # print("\n\n\n\n\n")
+            i += 1
+            print(len(self.stack))
+            print(f"Last added move: {self.made_moves[-1]}")
+            print()
 
     def get_next_move(self):
         if self.states:
