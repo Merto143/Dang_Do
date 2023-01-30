@@ -1,36 +1,6 @@
-import copy
-import numpy as np
+from codefiles.algorithms.depth_first import DepthFirst
 
-class DepthFirst:
-
-    def __init__(self, game):
-        self.board = game
-        self.board.generate_moveability()
-        self.node = -1
-
-        self.solution = []
-
-        self.cars = self.board.get_moveable_cars()
-
-        self.visited = []
-        self.nr_moves = 0
-        self.stack = [[copy.deepcopy(self.board), "-"]]
-        self.nodes = []
-        self.best_solution = 0
-
-
-    def go_to_next_state(self):
-        pass
-
-
-    def create_moves(self, game):
-        moves = []
-        for car in game.get_moveable_cars():
-            for direction in car.get_legal_moves():
-                new_move = [car, direction, self.node]
-                moves.append(new_move)
-        return moves
-
+class DepthFirst_break(DepthFirst):
 
     def run(self):
         k = 1
@@ -72,17 +42,3 @@ class DepthFirst:
 
         print("We have visited all possible states with depth first")
         print(f"best solution is: {self.best_solution}")
-
-
-    def find_solution(self):
-        self.solution = []
-
-        self.solution.insert(0, self.visited[-1][1])
-        current_node = self.visited[-1][1][2]
-
-        while current_node != 0:
-            self.solution.insert(0, self.visited[current_node][1])
-            new_node = self.visited[current_node][1][2]
-            current_node = new_node
-
-        return self.solution
