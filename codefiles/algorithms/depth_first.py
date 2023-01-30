@@ -20,7 +20,26 @@ class DepthFirst:
 
 
     def go_to_next_state(self):
-        pass
+        return self.stack.pop()
+
+
+    def add_to_node(self):
+        self.node += 1
+
+
+    def get_state(self, state):
+        current_state = state[0]
+        current_state.generate_moveability()
+        return current_state
+
+
+    def get_move(self, state):
+        current_move = state[1]
+        return current_move
+
+
+    def add_to_visited(self, state, move):
+        self.visited.append([copy.deepcopy(state.grid), move])
 
 
     def create_moves(self, game):
@@ -32,19 +51,22 @@ class DepthFirst:
         return moves
 
 
+    def add_to_stack(self, state, move):
+        self.stack.append([copy.deepcopy(state), move])
+
+
     def run(self):
         k = 1
         i = 1
         while self.stack:
-            item = self.stack.pop()
-            current_state = item[0]
-            current_move = item[1]
-            current_state.generate_moveability()
+            item = self.go_to_next_state()
             print(f"Iteration {i}")
-            self.node += 1
+            current_state = self.get_state(item)
+            current_move = self.get_move(item)
+            self.add_to_node()
 
             if not (len(self.solution) != 0 and self.nr_moves >= len(self.solution)):
-                self.visited.append([copy.deepcopy(current_state.grid), current_move])
+                self.add_to_visited(current_state, current_move)
                 i += 1
 
                 if not current_state.is_solved():
@@ -54,21 +76,19 @@ class DepthFirst:
                         current_state.set_car_coordinates()
                         self.history = list(zip(*self.visited))[0]
                         if not any(np.array_equal(current_state.grid, state) for state in self.history):
-                            self.stack.append([copy.deepcopy(current_state), move])
+                            self.add_to_stack(current_state, move)
                         current_state.undo_move(move[0], move[1])
                     print()
 
             if current_state.is_solved():
                 print(f"We have found solution nr {k}!")
                 k += 1
-                for move in self.find_solution():
-                    print(move)
+                self.display_solution()
                 print(f"Total moves of: {len(self.solution)}")
                 if len(self.solution) <= self.best_solution or self.best_solution == 0:
                     self.best_solution = len(self.solution)
                 print(f"Our best solution so far: {self.best_solution}")
                 print("\n\n")
-
 
         print("We have visited all possible states with depth first")
         print(f"best solution is: {self.best_solution}")
@@ -86,3 +106,8 @@ class DepthFirst:
             current_node = new_node
 
         return self.solution
+
+
+    def display_solution(self):
+        for move in self.find_solution():
+            print(move)

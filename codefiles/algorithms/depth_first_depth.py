@@ -1,6 +1,10 @@
+import copy
+import numpy as np
+
 from codefiles.algorithms.depth_first import DepthFirst
 
 class DepthFirst_depth(DepthFirst):
+    
     def __init__(self, game):
         self.board = game
         self.board.generate_moveability()
