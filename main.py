@@ -21,11 +21,12 @@ import time
 
 if __name__ == "__main__":
 
-    if len(argv) != 3:
-        print("Usage: python3 main.py [filename] [algorithm]")
+    if len(argv) != 3 and len(argv) != 4:
+        print("Usage: python3 main.py [filename] [algorithm] OR python3 main.py statistics [algorithm] [dimension]")
         exit(1)
 
-    else:
+    elif len(argv) == 3:
+
         filename = argv[1]
         algorithm = argv[2]
 
@@ -34,52 +35,56 @@ if __name__ == "__main__":
         else:
             dimension = int(filename[8])
 
-    game = Board(dimension, filename)
-
-    if algorithm == "random":
-        print("Now random:")
         game = Board(dimension, filename)
-        start = time.time()
-        iterations = random_only_legal_moves_algorithm(game)
-        end = time.time()
-        t = end - start
-        write_random(t, iterations, dimension)
 
-        print(f"It took {end - start} seconds to run the random algorithm")
+        if algorithm == "random":
+            print("Now random:")
+            game = Board(dimension, filename)
+            start = time.time()
+            iterations = random_only_legal_moves_algorithm(game)
+            end = time.time()
+            t = end - start
+            write_random(t, iterations, dimension)
 
-    elif algorithm == "breadth":
-        print("Now breadth_first:")
-        game = Board(dimension, filename)
-        Breadth_first = BreadthFirst(game)
-        start = time.time()
-        Breadth_first.run()
-        end = time.time()
-        t = end - start
-        write_breadth(t, iterations, dimension)
+            print(f"It took {end - start} seconds to run the random algorithm")
 
-    elif algorithm == "randombreadth":
-        game = Board(dimension, filename)
-        Breadth_first_random_states = BreadthFirstRandomStates(game)
-        start = time.time()
-        Breadth_first_random_states.run()
-        end = time.time()
+        elif algorithm == "breadth":
+            print("Now breadth_first:")
+            game = Board(dimension, filename)
+            Breadth_first = BreadthFirst(game)
+            start = time.time()
+            Breadth_first.run()
+            end = time.time()
+            t = end - start
+            write_breadth(t, iterations, dimension)
 
-        print(f"It took {end - start} seconds to run the BreadthFirstRandomStates algorithm")
-        print()
+        elif algorithm == "randombreadth":
+            game = Board(dimension, filename)
+            Breadth_first_random_states = BreadthFirstRandomStates(game)
+            start = time.time()
+            Breadth_first_random_states.run()
+            end = time.time()
 
-    elif algorithm == "depth":
-        df = DepthFirst(game)
+        elif algorithm == "depth":
+            df = DepthFirst(game)
 
-        df.run()
+            df.run()
 
-    elif algorithm == "depth_break":
+        elif algorithm == "depth_break":
 
-        df = DepthFirst_break(game)
+            df = DepthFirst_break(game)
 
-        df.run()
+            df.run()
 
-    elif algorithm == "depth_depth":
+        elif algorithm == "depth_depth":
 
-        df = DepthFirst_depth(game)
+            df = DepthFirst_depth(game)
 
-        df.run()
+            df.run()
+
+        else:
+
+            algorithm = argv[2]
+            dimension = argv[3]
+            data = load_statistics(algorithm, dimension)
+            stat(algorithm, data)
