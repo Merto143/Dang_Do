@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from colorhash import ColorHash
+import time
+import csv
 
 
 def grid_visual(game: Board) -> None:
@@ -32,14 +34,23 @@ def grid_visual(game: Board) -> None:
 
     plt.show()
 
-# Voeg toe aan elk algoritme na runtime
-def write_statistics(algorithm, iterations):
-    with open("statistics.csv", 'w') as f:
+def write_random(time, iterations, dim):
+    with open("data/random.csv", 'a') as f:
         writer = csv.writer(f)
-        writer.writerow(algorithm, iterations)
+        writer.writerow([time, iterations, dim])
 
-def load_statistics():
-    with open("statistics.csv", 'r') as f:
+# def write_breath():
+#
+# def write_breadth_random():
+#
+# def write_depth():
+#
+# def write_beam():
+
+
+
+def load_statistics(algorithm):
+    with open(f"data/{algorithm}.csv", 'r') as f:
         next(f)
         for line in f:
             f.readline().split()

@@ -44,7 +44,7 @@ class DepthFirst:
                     print(f"{current_state.grid} has already been visited: {any(np.array_equal(current_state.grid, state) for state in self.visited)}")
                     if not any(np.array_equal(current_state.grid, state) for state in self.visited):
                         self.stack.append(copy.deepcopy(current_state))
-                        print(f"{self.stack[-1].grid} is the last added state")
+                    print(f"{self.stack[-1].grid} is the last added state")
                     current_state.undo_move(move[0], move[1])
             print(f"Stack: {self.stack}")
             print(f"Visited States:{self.visited}")
