@@ -41,7 +41,6 @@ if __name__ == "__main__":
             end = time.time()
             t = end - start
             write_random(t, iterations, dimension)
-            load_statistics(algorithm)
 
             print(f"It took {end - start} seconds to run the random algorithm")
 

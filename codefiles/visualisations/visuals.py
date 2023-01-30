@@ -41,7 +41,7 @@ def write_random(time, iterations, dim):
 
 # def write_breath(time, path):
 #
-# def write_breadth_random(time, length):
+# def write_randombreadth(time, length):
 #
 # def write_depth(time, iterations, length):
 #
@@ -65,4 +65,13 @@ def stat(algorithm, data):
     for i in range(len(data)):
         iterations.append(data[i][1])
     plt.hist(iterations)
+    plt.show()
+
+    time = []
+    for j in range(len(data)):
+        time.append(data[j][0])
+    plt.hist(time)
+    plt.show()
+
+    plt.scatter(iterations, time)
     plt.show()
