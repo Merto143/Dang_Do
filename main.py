@@ -5,12 +5,15 @@ from codefiles.visualisations.visuals import *
 from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, random_all_moves_algorithm
 from codefiles.algorithms.algorithms import breadth_first
 from codefiles.algorithms.depth_first import DepthFirst
+from codefiles.algorithms.depth_first_break import DepthFirst_break
+from codefiles.algorithms.depth_first_depth import DepthFirst_depth
 
 
 from codefiles.algorithms.algorithms import breadth_first
 from codefiles.algorithms.algorithms import breadth_first
 from codefiles.algorithms.breadth_first import BreadthFirst
 from codefiles.algorithms.breadth_first_random_states import BreadthFirstRandomStates
+
 
 from tqdm import tqdm
 import time
@@ -77,15 +80,6 @@ if __name__ == "__main__":
             print()
 
         elif algorithm == "depth":
-
-            df = DepthFirst(game)
-
-            df.run2()
-
-            bf = breadth_first(game)
-            bf.run()
-            breadth_first(game)
-
             df = DepthFirst(game)
 
             df.run()
