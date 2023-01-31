@@ -45,17 +45,17 @@ def write_breadth(time, visited_states, dim, path):
         writer.writerow([time, visited_states, dim, path])
 
 def write_randombreadth(time, visited_states, dim, path):
-    with open("data/breadth.csv", 'a') as f:
+    with open("data/randombreadth.csv", 'a') as f:
         writer = csv.writer(f)
         writer.writerow([time, visited_states, dim, path])
 
 def write_depth(time, visited_states, dim, path):
-    with open("data/breadth.csv", 'a') as f:
+    with open("data/depth.csv", 'a') as f:
         writer = csv.writer(f)
         writer.writerow([time, visited_states, dim, path])
 
 def write_beam(time, visited_states, dim, path):
-    with open("data/breadth.csv", 'a') as f:
+    with open("data/beam.csv", 'a') as f:
         writer = csv.writer(f)
         writer.writerow([time, visited_states, dim, path])
 
@@ -64,7 +64,6 @@ def load_statistics(algorithm, dimension):
 
     data = []
     with open(f"data/{algorithm}.csv", 'r') as f:
-        line = f.readline()
         for line in f:
             list = line.strip().split(",")
             if list[2] == dimension:
@@ -80,7 +79,7 @@ def histograms(algorithm, data, dimension):
     visited_states = []
     for i in range(len(data)):
         visited_states.append(data[i][1])
-    plt.hist(visited_states, bins = 50)
+    plt.hist(visited_states, bins = len(data) // 3 )
     plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
     plt.ylabel("Relative Frequency")
     plt.xlabel("Visited States")
@@ -89,7 +88,7 @@ def histograms(algorithm, data, dimension):
     time = []
     for j in range(len(data)):
         time.append(data[j][0])
-    plt.hist(time, bins = 50)
+    plt.hist(time, bins = len(data) // 3)
     plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
     plt.ylabel("Relative Frequency")
     plt.xlabel("Time elapsed (s)")
@@ -98,13 +97,12 @@ def histograms(algorithm, data, dimension):
     if algorithm != "breadth" and algorithm != "random":
         path = []
         for k in range(len(data)):
-            path.append(data[k][3])
-        plt.hist(path, density = True)
+            path.append(data[k][2])
+        plt.hist(path, bins = len(data) // 3)
         plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
         plt.ylabel("Relative Frequency")
         plt.xlabel("Shortes Path")
         plt.show()
-
 
 # def scatterplot(algorithm, data, dimension):
 #
@@ -115,10 +113,11 @@ def histograms(algorithm, data, dimension):
 #             datalist.append(load_statistics(algorithms[i], dimension))
 #         else:
 #             datalist.append(data)
-#         for j in range(len(data[j])):
-#             xaxis = datalist[i][j][3]
+#         for j in range(len(datalist[i])):
+#             xaxis = datalist[i][j][1]
 #             yaxis = datalist[i][j][0]
-#             plt.scatter(xaxis, yaxis, marker = ",")
+#             plt.ylim([0,10])
+#             plt.scatter(xaxis, yaxis)
 #     plt.show()
 #
 #     dimensions = [6, 9, 12]
@@ -128,8 +127,8 @@ def histograms(algorithm, data, dimension):
 #             datalist.append(load_statistics(algorithm, dimensions[i]))
 #         else:
 #             datalist.append(data)
-#         for j in range(len(data[j])):
-#             xaxis = datalist[i][j][3]
+#         for j in range(len(datalist[i])):
+#             xaxis = datalist[i][j][-1]
 #             yaxis = datalist[i][j][0]
-#             plt.scatter(xaxis, yaxis, marker = ",")
+#             plt.scatter(xaxis, yaxis)
 #     plt.show()

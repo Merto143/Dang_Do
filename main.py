@@ -29,7 +29,9 @@ if __name__ == "__main__":
         algorithm = argv[2]
         dimension = argv[3]
         data = load_statistics(algorithm, dimension)
+        print(data[0])
         histograms(algorithm, data, dimension)
+        # scatterplot(algorithm, data, dimension)
 
     else:
         filename = argv[1]
@@ -42,6 +44,7 @@ if __name__ == "__main__":
             dimension = int(filename[8])
 
         game = Board(dimension, filename)
+        grid_visual(game)
 
         if algorithm == "random":
             n_runs = 0
@@ -53,36 +56,83 @@ if __name__ == "__main__":
                 start = time.time()
                 visited_states = random_only_legal_moves_algorithm(game)
                 end = time.time()
-                time = end - start
-                write_random(time, visited_states, dimension)
+                runtime = end - start
+                write_random(runtime, visited_states, dimension)
                 n_runs += 1
 
-                print(f"It took {time} seconds to run the random algorithm")
+                print(f"It took {runtime} seconds to run the random algorithm")
+
+            grid_visual(game)
 
         elif algorithm == "breadth":
             print("Now breadth_first:")
             game = Board(dimension, filename)
-            Breadth_first = BreadthFirst(game)
+            breadth = BreadthFirst(game)
             start = time.time()
-            Breadth_first.run()
+            breadth.run()
             end = time.time()
-            time = end - start
-            write_breadth(time, len(Breadth_first.get_visited_states()), dimension, len(Breadth_first.get_solution()))
+            runtime = end - start
+            write_breadth(runtime, len(breadth.get_visited_states()), dimension, int(len(breadth.get_solution()) / 2))
+
+            print(f"It took {runtime} seconds to run the Breadth First Search algorithm")
+
+            grid_visual(game)
 
         elif algorithm == "randombreadth":
-            game = Board(dimension, filename)
-            Breadth_first_random_states = BreadthFirstRandomStates(game)
-            start = time.time()
-            Breadth_first_random_states.run()
-            end = time.time()
+            n_runs = 0
+            start_run = time.time()
+            while n_runs < max_runs:
+                game = Board(dimension, filename)
+                randombreadth = BreadthFirstRandomStates(game)
 
-            print(f"It took {end - start} seconds to run the BreadthFirstRandomStates algorithm")
-            print()
+                start = time.time()
+                randombreadth.run()
+                end = time.time()
+
+                runtime = end - start
+                write_randombreadth(runtime, len(randombreadth.get_visited_states()), dimension, int(len(randombreadth.get_solution()) / 2))
+                n_runs += 1
+
+                print(f"It took {runtime} seconds to run the optimized random algorithm")
+
+            grid_visual(game)
 
         elif algorithm == "depth":
-            df = DepthFirst(game)
+            n_runs = 0
+            start_run = time.time()
+            while n_runs < max_runs:
+                game = Board(dimension, filename)
+                depth = DepthFirst(game)
 
-            df.run()
+                start = time.time()
+                depth.run()
+                end = time.time()
+
+                runtime = end - start
+                write_depth(runtime, depth.get_visited_states(), dimension, depth.get_solution())
+                n_runs += 1
+
+                print(f"It took {runtime} seconds to run the Depth First Search algorithm")
+
+            grid_visual(game)
+
+        elif algorithm == "beam":
+            n_runs = 0
+            start_run = time.time()
+            while n_runs < runs_max:
+                game = Board(dimension, filename)
+                beam = BeamSearch(game)
+
+                start = time.time()
+                beam.run()
+                end = time.time()
+
+                runtime = end - start
+                write_beam(time, beam.get_visited_states(), dimension, int(len(beam.get_solution()) / 2) )
+
+                print(f"It took {runtime} seconds to run the Depth First Search algorithm")
+
+            grid_visual(game)
 
 
     # nr = 10

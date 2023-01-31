@@ -130,7 +130,12 @@ class DepthFirst:
 
         return self.solution
 
-
     def display_solution(self):
         for move in self.find_solution():
             print(move)
+
+    def get_visited_states(self):
+        return self.node
+
+    def get_solution(self):
+        return self.best_solution

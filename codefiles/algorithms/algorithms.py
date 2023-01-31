@@ -7,7 +7,6 @@ import copy
 import numpy as np
 
 def random_only_legal_moves_algorithm(game):
-    # grid_visual(game)
     cars = game.get_cars()
     game.generate_moveability()
     total_moves = 0
@@ -20,7 +19,6 @@ def random_only_legal_moves_algorithm(game):
         game.move_car(car, direction)
         total_moves += 1
         game.generate_moveability()
-    # grid_visual(game)
 
     return total_moves
 

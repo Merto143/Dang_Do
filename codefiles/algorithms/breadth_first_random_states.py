@@ -13,7 +13,7 @@ class BreadthFirstRandomStates(BreadthFirst):
         self.game.generate_moveability()
         self.cars = self.game.get_moveable_cars()
         self.enque_movable_cars()
-        
+
         while not self.game.is_solved():
             self.move = self.queue.dequeue()
             self.game.grid = copy.deepcopy(self.grid_memory[self.move[2]][0])
@@ -43,3 +43,9 @@ class BreadthFirstRandomStates(BreadthFirst):
             return True
 
         return False
+
+    def get_solution(self):
+        return self.solution
+
+    def get_visited_states(self):
+        return self.grid_memory

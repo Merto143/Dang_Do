@@ -80,3 +80,9 @@ class BeamSearch(BreadthFirst):
             for direction in car.get_legal_moves():
                 new_move = [[car, direction, self.node, self.gen_new], copy.copy(self.game.grid)]
                 self.queue.enqueue(new_move)
+
+    def get_visited_states(self):
+        return self.node
+
+    def get_solution(self):
+        return self.solution
