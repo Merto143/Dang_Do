@@ -6,7 +6,9 @@ class BeamSearch(BreadthFirst):
     def __init__(self, game, beam):
         super().__init__(game)
         self.beam = beam
-
+        print("Begin")
+        self.game.get_id()
+        print("END")
 
     def run2(self):
         while not self.game.is_solved():
