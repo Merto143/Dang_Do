@@ -15,7 +15,6 @@ def random_only_legal_moves_algorithm(game):
     random_memory.append(copy.deepcopy(game.grid))
 
     while not game.is_solved():
-        # grid_visual(game)
         car = random.choice(game.get_moveable_cars())
         direction = random.choice(car.legal_moves)
         game.move_car(car, direction)

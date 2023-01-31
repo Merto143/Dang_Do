@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from colorhash import ColorHash
-import time
 import csv
 
 
@@ -34,44 +33,103 @@ def grid_visual(game: Board) -> None:
 
     plt.show()
 
-def write_random(time, iterations, dim):
+
+def write_random(time, visited_states, dim):
     with open("data/random.csv", 'a') as f:
         writer = csv.writer(f)
-        writer.writerow([time, iterations, dim])
+        writer.writerow([time, visited_states, dim])
 
-# def write_breath(time, path):
-#
-# def write_randombreadth(time, length):
-#
-# def write_depth(time, iterations, length):
-#
-# def write_beam(time, iterations, length):
+def write_breadth(time, visited_states, dim, path):
+    with open("data/breadth.csv", 'a') as f:
+        writer = csv.writer(f)
+        writer.writerow([time, visited_states, dim, path])
 
+def write_randombreadth(time, visited_states, dim, path):
+    with open("data/breadth.csv", 'a') as f:
+        writer = csv.writer(f)
+        writer.writerow([time, visited_states, dim, path])
+
+def write_depth(time, visited_states, dim, path):
+    with open("data/breadth.csv", 'a') as f:
+        writer = csv.writer(f)
+        writer.writerow([time, visited_states, dim, path])
+
+def write_beam(time, visited_states, dim, path):
+    with open("data/breadth.csv", 'a') as f:
+        writer = csv.writer(f)
+        writer.writerow([time, visited_states, dim, path])
 
 
 def load_statistics(algorithm, dimension):
+
     data = []
     with open(f"data/{algorithm}.csv", 'r') as f:
         line = f.readline()
         for line in f:
             list = line.strip().split(",")
             if list[2] == dimension:
-                data.append([float(list[0]), int(list[1])])
+                if not algorithm == "random":
+                    data.append([float(list[0]), int(list[1]), int(list[3])])
+                else:
+                    data.append([float(list[0]), int(list[1])])
     return data
 
 
-def stat(algorithm, data):
-    iterations = []
+def histograms(algorithm, data, dimension):
+
+    visited_states = []
     for i in range(len(data)):
-        iterations.append(data[i][1])
-    plt.hist(iterations)
+        visited_states.append(data[i][1])
+    plt.hist(visited_states, bins = 50)
+    plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
+    plt.ylabel("Relative Frequency")
+    plt.xlabel("Visited States")
     plt.show()
 
     time = []
     for j in range(len(data)):
         time.append(data[j][0])
-    plt.hist(time)
+    plt.hist(time, bins = 50)
+    plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
+    plt.ylabel("Relative Frequency")
+    plt.xlabel("Time elapsed (s)")
     plt.show()
 
-    plt.scatter(iterations, time)
-    plt.show()
+    if algorithm != "breadth" and algorithm != "random":
+        path = []
+        for k in range(len(data)):
+            path.append(data[k][3])
+        plt.hist(path, density = True)
+        plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
+        plt.ylabel("Relative Frequency")
+        plt.xlabel("Shortes Path")
+        plt.show()
+
+
+# def scatterplot(algorithm, data, dimension):
+#
+#     algorithms = ["random", "randombreadth", "breadth", "depth", "beam"]
+#     datalist = []
+#     for i in range(len(algorithms)):
+#         if not algorithms[i] == algorithm:
+#             datalist.append(load_statistics(algorithms[i], dimension))
+#         else:
+#             datalist.append(data)
+#         for j in range(len(data[j])):
+#             xaxis = datalist[i][j][3]
+#             yaxis = datalist[i][j][0]
+#             plt.scatter(xaxis, yaxis, marker = ",")
+#     plt.show()
+#
+#     dimensions = [6, 9, 12]
+#     datalist = [data]
+#     for i in range(len(dimensions)):
+#         if not dimensions[i] == dimension:
+#             datalist.append(load_statistics(algorithm, dimensions[i]))
+#         else:
+#             datalist.append(data)
+#         for j in range(len(data[j])):
+#             xaxis = datalist[i][j][3]
+#             yaxis = datalist[i][j][0]
+#             plt.scatter(xaxis, yaxis, marker = ",")
+#     plt.show()
