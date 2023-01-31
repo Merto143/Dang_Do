@@ -25,6 +25,32 @@ def random_only_legal_moves_algorithm(game):
 
     return total_moves
 
+def random_only_legal_moves_algorithm_with_memory(game):
+    cars = game.get_cars()
+    game.generate_moveability()
+    total_moves = 0
+    random_memory = []
+    random_memory.append(copy.deepcopy(game.grid))
+
+    while not game.is_solved():
+        car = random.choice(game.get_moveable_cars())
+        direction = random.choice(car.get_legal_moves())
+        game.move_car(car, direction)
+        total_moves += 1
+        game.generate_moveability()
+
+
+        if not any(np.array_equal(game.grid, item) for item in random_memory):
+            grid_copy = copy_grid(game.grid)
+            random_memory.append(grid_copy)
+
+    print(len(random_memory))
+    return random_memory
+
+def copy_grid(grid):
+    grid_copy =  copy.copy(grid)
+
+    return grid_copy
 
 def random_all_moves_algorithm(game):
     cars = game.get_cars()
