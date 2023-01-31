@@ -12,7 +12,7 @@ class DepthFirst_break(DepthFirst):
             print(f"Iteration {i}")
             current_state = self.get_state(item)
             current_move = self.get_move(item)
-            self.add_to_node()
+            self.increase_node()
 
             if not (len(self.solution) != 0 and self.nr_moves >= len(self.solution)):
                 self.add_to_visited(current_state, current_move)

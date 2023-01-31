@@ -10,11 +10,12 @@ class DepthFirst:
 
         self.solution = []
 
-        self.cars = self.board.get_moveable_cars()
+        # self.cars = self.board.get_moveable_cars()
 
+        self.depth = 0
         self.visited = []
         self.nr_moves = 0
-        self.stack = [[copy.deepcopy(self.board), "-"]]
+        self.stack = [[copy.deepcopy(self.board), "-", self.depth]]
         self.nodes = []
         self.best_solution = 0
 
@@ -23,13 +24,12 @@ class DepthFirst:
         return self.stack.pop()
 
 
-    def add_to_node(self):
+    def increase_node(self):
         self.node += 1
 
 
     def get_state(self, state):
         current_state = state[0]
-        current_state.generate_moveability()
         return current_state
 
 
@@ -37,9 +37,13 @@ class DepthFirst:
         current_move = state[1]
         return current_move
 
+    # def set_depth(self):
+    #
+    #     return self.depth
 
-    def add_to_visited(self, state, move):
-        self.visited.append([copy.deepcopy(state.grid), move])
+
+    def add_to_visited(self, state, move, depth):
+        self.visited.append([copy.deepcopy(state.grid), move, depth])
 
 
     def create_moves(self, game):
@@ -47,12 +51,14 @@ class DepthFirst:
         for car in game.get_moveable_cars():
             for direction in car.get_legal_moves():
                 new_move = [car, direction, self.node]
+                print(f"New move: {new_move}")
                 moves.append(new_move)
+        print(f"moves: {moves}")
         return moves
 
 
-    def add_to_stack(self, state, move):
-        self.stack.append([copy.deepcopy(state), move])
+    def add_to_stack(self, state, move, depth):
+        self.stack.append([copy.deepcopy(state), move, depth])
 
 
     def run(self):
@@ -62,23 +68,40 @@ class DepthFirst:
             item = self.go_to_next_state()
             print(f"Iteration {i}")
             current_state = self.get_state(item)
+            current_state.generate_moveability()
+            current_state.set_car_coordinates()
             current_move = self.get_move(item)
-            self.add_to_node()
+            self.increase_node()
+
+            depth = self.depth
+
+            # depth = self.set_depth()
+
+
+            print(len(self.stack))
+            print(current_state.grid)
+            print(current_move)
 
             if not (len(self.solution) != 0 and self.nr_moves >= len(self.solution)):
-                self.add_to_visited(current_state, current_move)
+                self.add_to_visited(current_state, current_move, depth)
                 i += 1
 
                 if not current_state.is_solved():
                     self.moves = self.create_moves(current_state)
+                    # print(len(self.moves))
                     for move in self.moves:
                         current_state.move_car(move[0], move[1])
                         current_state.set_car_coordinates()
                         self.history = list(zip(*self.visited))[0]
                         if not any(np.array_equal(current_state.grid, state) for state in self.history):
-                            self.add_to_stack(current_state, move)
+                            self.add_to_stack(current_state, move, depth)
+                            # print(move)
                         current_state.undo_move(move[0], move[1])
                     print()
+
+            # print(current_state.grid)
+            # print()
+            # print(self.visited)
 
             if current_state.is_solved():
                 print(f"We have found solution nr {k}!")

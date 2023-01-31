@@ -44,7 +44,7 @@ if __name__ == "__main__":
             iterations = random_only_legal_moves_algorithm(game)
             end = time.time()
             t = end - start
-            write_random(t, iterations, dimension)
+            # write_random(t, iterations, dimension)
 
             print(f"It took {end - start} seconds to run the random algorithm")
 

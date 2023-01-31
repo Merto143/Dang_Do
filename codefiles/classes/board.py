@@ -125,13 +125,15 @@ class Board:
                 for move in ["E", "W"]:
                     if self.car_is_movable(car, move):
                         car.add_legal_move(move)
-                        self.moveable_cars.append(car)
+                        if car not in self.moveable_cars:
+                            self.moveable_cars.append(car)
 
             elif car.get_orientation() == "V":
                 for move in ["N", "S"]:
                     if self.car_is_movable(car, move):
                         car.add_legal_move(move)
-                        self.moveable_cars.append(car)
+                        if car not in self.moveable_cars:
+                            self.moveable_cars.append(car)
 
 
     def is_solved(self) -> bool:
