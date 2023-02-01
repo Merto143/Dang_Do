@@ -56,7 +56,7 @@ if __name__ == "__main__":
             Breadth_first.run()
             end = time.time()
             t = end - start
-            write_breadth(t, iterations, dimension)
+            # write_breadth(t, iterations, dimension)
 
         elif algorithm == "randombreadth":
             game = Board(dimension, filename)
@@ -79,6 +79,18 @@ if __name__ == "__main__":
         elif algorithm == "depth_depth":
 
             df = DepthFirst_depth(game)
+
+            df.run()
+
+        elif algorithm == "df2":
+
+            df2 = DF2(game)
+
+            df2.run()
+
+        elif algorithm == "df":
+
+            df = DF(game)
 
             df.run()
 

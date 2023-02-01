@@ -20,6 +20,7 @@ class Board:
         self.visited_states = []
         self.color_dict = {}
         self.filename = filename
+        self.depth = None
         self.load_cars(f"data/{filename}.csv")
         self.add_cars_to_grid()
 
