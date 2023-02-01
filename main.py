@@ -8,6 +8,7 @@ from codefiles.algorithms.depth_first_break import DepthFirst_break
 from codefiles.algorithms.depth_first_depth import DepthFirst_depth
 from codefiles.algorithms.breadth_first import BreadthFirst
 from codefiles.algorithms.breadth_first_random_states import BreadthFirstRandomStates
+from codefiles.algorithms.beam_search import BeamSearch
 
 
 from tqdm import tqdm
@@ -103,6 +104,23 @@ if __name__ == "__main__":
                 runtime = end - start
                 write_depth(runtime, len(depth.get_visited_states()) - 1, dimension, len(depth.get_solution()))
                 n_runs += 1
+
+                print(f"It took {runtime} seconds to run the Depth First Search algorithm")
+
+            # grid_visual(game)
+
+        elif algorithm == "beam":
+            start_run = time.time()
+            while n_runs < runs_max:
+                game = Board(dimension, filename)
+                beam = BeamSearch(game)
+
+                start = time.time()
+                beam.run()
+                end = time.time()
+
+                runtime = end - start
+                # write_beam(time, beam.get_visited_states(), dimension, int(len(beam.get_solution()) / 2) )
 
                 print(f"It took {runtime} seconds to run the Depth First Search algorithm")
 
