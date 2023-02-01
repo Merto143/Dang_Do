@@ -6,9 +6,7 @@ class BeamSearch(BreadthFirst):
     def __init__(self, game, beam):
         super().__init__(game)
         self.beam = beam
-        print("Begin")
-        self.game.get_id()
-        print("END")
+
 
     def run2(self):
         while not self.game.is_solved():
@@ -17,16 +15,16 @@ class BeamSearch(BreadthFirst):
             while (self.queue.list != []):
                 self.move = self.queue.dequeue()
 
-                self.game.grid = copy.copy(self.grid_memory[self.move[2]][0])
-                self.game.set_car_coordinates()
+                self.game.id = self.grid_memory[self.move[2]][0]
+                self.game.get_board_with_id()
 
                 self.game.move_car(self.move[0], self.move[1])
+
                 self.memories = list(zip(*self.grid_memory))[0]
                 score = self.game.get_score()
                 grid = copy.deepcopy(self.game.grid)
                 state_score = [grid, score]
                 self.scores_in_gen.append(state_score)
-            random.shuffle(self.scores_in_gen)
             # sorted(self.scores_in_gen, key=itemgetter(1))
 
             if len(self.scores_in_gen) < self.beam:

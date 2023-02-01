@@ -16,8 +16,7 @@ class BreadthFirst:
 
         # add the first state to the memory
         self.game.generate_moveability()
-        self.grid = copy.deepcopy(self.game.grid)
-        self.grid_memory.append([self.grid, "-"])
+        self.grid_memory.append([self.game.get_id(), "-"])
 
         # define the red car and
         self.carX = self.game.get_cars()[-1]
@@ -32,8 +31,8 @@ class BreadthFirst:
 
         while not self.game.is_solved():
             self.move = self.queue.dequeue()
-            self.game.grid = copy.copy(self.grid_memory[self.move[2]][0])
-            self.game.set_car_coordinates()
+            self.game.id = self.grid_memory[self.move[2]][0]
+            self.game.get_board_with_id()
 
             self.game.move_car(self.move[0], self.move[1])
 
@@ -52,7 +51,7 @@ class BreadthFirst:
         """Return True if the current grid is not yet visited. """
         self.memories = list(zip(*self.grid_memory))[0]
 
-        if not any(np.array_equal(self.game.grid, item) for item in self.memories):
+        if not self.game.get_id() in self.memories:
             return True
 
         return False
@@ -99,7 +98,7 @@ class BreadthFirst:
     def add_state_to_memory(self):
         """Add the current state to the memory. """
         self.move_memory.append(self.move)
-        self.grid_memory.append([self.game.grid, self.move])
+        self.grid_memory.append([self.game.get_id(), self.move])
 
 
     def enque_movable_cars(self):

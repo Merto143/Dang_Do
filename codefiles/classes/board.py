@@ -210,13 +210,23 @@ class Board:
 
         return score
 
+
     def get_id(self):
         self.id = ""
         for row in range(self.dim):
             for col in range(self.dim):
                 item = self.grid[row][col]
-                if item == "-":
-                    self.id += "0"
-                else:
-                    self.id += item
+                self.id += item
+
         return self.id
+
+
+    def get_board_with_id(self):
+        self.grid = np.full((self.dim, self.dim), "-")
+        item = 0
+
+        for row in range(self.dim):
+            for col in range(self.dim):
+                self.grid[row][col] = self.id[item]
+                item += 1
+        self.set_car_coordinates()

@@ -1,7 +1,7 @@
 from sys import argv
 from codefiles.classes.car import Car
 from codefiles.classes.board import Board
-from codefiles.visualisations.visuals import grid_visual, write_random, write_breadth, write_randombreadth, write_depth, write_beam, load_statistics, histograms, scatterplot
+# from codefiles.visualisations.visuals import grid_visual, write_random, write_breadth, write_randombreadth, write_depth, write_beam, load_statistics, histograms, scatterplot
 from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm
 from codefiles.algorithms.depth_first import DepthFirst
 from codefiles.algorithms.depth_first_break import DepthFirst_break
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
         elif algorithm == "randombreadth":
             start_run = time.time()
-            random_repeats = 1
+            random_repeats = 3
             while n_runs < max_runs:
                 game = Board(dimension, filename)
                 randombreadth = BreadthFirstRandomStates(game, random_repeats)
@@ -84,7 +84,7 @@ if __name__ == "__main__":
                 end = time.time()
 
                 runtime = end - start
-                write_randombreadth(runtime, len(randombreadth.get_visited_states()), dimension, int(len(randombreadth.get_solution()) / 2))
+                # write_randombreadth(runtime, len(randombreadth.get_visited_states()), dimension, int(len(randombreadth.get_solution()) / 2))
                 n_runs += 1
 
                 print(f"It took {runtime} seconds to run the optimized random algorithm")

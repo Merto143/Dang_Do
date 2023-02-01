@@ -4,20 +4,22 @@ from codefiles.classes.board import Board
 
 
 class BreadthFirstRandomStates(BreadthFirst):
+    def __init__(self, game, random_repeats):
+            super().__init__(game)
+            self.reps = random_repeats
+            self.run_random()
+
+            self.game = Board(self.game.dim, self.game.filename)
+
+            self.game.generate_moveability()
+            self.cars = self.game.get_moveable_cars()
+            self.enque_movable_cars()
 
     def run(self):
-        self.run_random()
-
-        self.game = Board(self.game.dim, self.game.filename)
-
-        self.game.generate_moveability()
-        self.cars = self.game.get_moveable_cars()
-        self.enque_movable_cars()
-
         while not self.game.is_solved():
             self.move = self.queue.dequeue()
-            self.game.grid = copy.deepcopy(self.grid_memory[self.move[2]][0])
-            self.game.set_car_coordinates()
+            self.game.id = self.grid_memory[self.move[2]][0]
+            self.game.get_board_with_id()
 
             self.game.move_car(self.move[0], self.move[1])
 
@@ -36,7 +38,7 @@ class BreadthFirstRandomStates(BreadthFirst):
 
 
     def run_random(self):
-        self.random_memory = random_only_legal_moves_memory_algorithm(self.game)
+        self.random_memory = random_only_legal_moves_memory_algorithm(self.game, self.reps)
 
     def state_in_random_memory(self):
         id = self.game.get_id()
@@ -44,9 +46,3 @@ class BreadthFirstRandomStates(BreadthFirst):
             return True
 
         return False
-
-    def get_solution(self):
-        return self.solution
-
-    def get_visited_states(self):
-        return self.grid_memory
