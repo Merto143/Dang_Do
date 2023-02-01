@@ -21,19 +21,18 @@ if __name__ == "__main__":
         print("Usage: python3 main.py [filename] [algorithm] [nr of runs] OR python3 main.py statistics [algorithm] [dimension]")
         exit(1)
 
-    if argv[1] == "statistics":
+    elif argv[1] == "statistics":
         algorithm = argv[2]
         dimension = argv[3]
         data = load_statistics(algorithm, dimension)
-        print(data[0])
         histograms(algorithm, data, dimension)
         # scatterplot(algorithm, data, dimension)
 
-    if len(argv) == 4:
+    else:
 
         filename = argv[1]
         algorithm = argv[2]
-        max_runs = argv[3]
+        max_runs = int(argv[3])
         n_runs = 0
 
         if filename[9] == "2":
