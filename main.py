@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
             # grid_visual(game)
 
-        elif algorithm == "df_all":
+        elif algorithm == "depth_all":
             start_run = time.time()
             while n_runs < max_runs:
                 game = Board(dimension, filename)
