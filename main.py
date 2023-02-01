@@ -112,12 +112,12 @@ if __name__ == "__main__":
 
         elif algorithm == "beam":
             start_run = time.time()
-            while n_runs < runs_max:
+            while n_runs < max_runs:
                 game = Board(dimension, filename)
-                beam = BeamSearch(game)
+                beam = BeamSearch(game, 3)
 
                 start = time.time()
-                beam.run()
+                beam.run2()
                 end = time.time()
 
                 runtime = end - start

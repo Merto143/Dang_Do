@@ -4,101 +4,97 @@ from codefiles.classes.queue import Queue
 from codefiles.visualisations.visuals import *
 import random
 import copy
-import numpy as np
 
 def random_only_legal_moves_algorithm(game):
-    cars = game.get_cars()
-    game.generate_moveability()
+    """Run the random algorithm with only legal moves on the given board. """
     total_moves = 0
-    random_memory = []
-    random_memory.append(copy.deepcopy(game.grid))
+    # get all moveable cars
+    game.generate_moveability()
 
+    # move a random car untill the game is solved
     while not game.is_solved():
+
+        # get a random car that is able to move
         car = random.choice(game.get_moveable_cars())
+
+        # get a random legal move and play the move
         direction = random.choice(car.legal_moves)
         game.move_car(car, direction)
         total_moves += 1
+
+        # update the movebale cars
         game.generate_moveability()
 
     return total_moves
 
 
 def random_only_legal_moves_memory_algorithm(game, times):
-        game0 = copy.copy(game)
-        cars = game.get_cars()
-        game.generate_moveability()
-        total_moves = 0
-        random_memory = []
-        random_memory.append(game.get_id())
+    """Run the random algorithm with only legal moves on the given board. Save
+    the visited grid id's and repeat it a given amount of times to increase the
+    total visited states"""
+    # copy the game in the start state
+    game0 = copy.copy(game)
 
-        for time in range(times):
-            game = Board(game0.dim, game0.filename)
-            cars = game.get_cars()
+    total_moves = 0
+    random_memory = []
+
+    # get all moveable cars
+    game.generate_moveability()
+
+    # add the start grid id to the memory
+    random_memory.append(game.get_id())
+
+    # repeat the random search a given amount of times.
+    for time in range(times):
+        game = Board(game0.dim, game0.filename)
+        game.generate_moveability()
+
+        # keep moving cars untill the game is solved
+        while not game.is_solved():
+            # choose a car that is able to move
+            car = random.choice(game.get_moveable_cars())
+
+            # choose a legal move and play that move
+            direction = random.choice(car.get_legal_moves())
+
+            game.move_car(car, direction)
+            total_moves += 1
             game.generate_moveability()
 
-            while not game.is_solved():
-                car = random.choice(game.get_moveable_cars())
-                direction = random.choice(car.get_legal_moves())
-                game.move_car(car, direction)
-                total_moves += 1
-                game.generate_moveability()
-                id = game.get_id()
+            # if a state is not yet visited add the id to the random memory
+            if not game.get_id() in random_memory:
+                random_memory.append(game.get_id())
 
-                if not id in random_memory:
-                    random_memory.append(id)
+    return random_memory
 
-
-        print(len(random_memory))
-        return random_memory
-        
 
 def random_all_moves_algorithm(game):
+    """Run the random all mnoves algorithm. The algorithm can pick a move that is
+    not legal and then will not play that move """
     cars = game.get_cars()
     total_moves = 0
     direction = ""
 
     while not game.is_solved():
+        # choose a random car
         car = random.choice(cars)
 
+        # check if the position is horizontal of vertical
         if car.get_orientation() == "H":
+            # choose random from East or West
             direction = random.choice(["E", "W"])
 
         elif car.get_orientation() == "V":
+            # choose random from North or South
             direction = random.choice(["N", "S"])
 
+        # apply the move (it might not be legal)
         game.move_car(car, direction)
         total_moves += 1
+
     return total_moves
 
 
-def breadth_first(game):
-
-
-    print(grid_memory[node][0])
-    print(solution)
-
-
-# def tiles_blocked_heur(game):
-#     cars = game.get_cars()
-#     game.generate_moveability()
-#     total_moves = 0
-#
-#     while not game.is_solved():
-#         car = random.choice(game.get_moveable_cars())
-#         direction = random.choice(car.legal_moves)
-#         tiles = game.tiles_blocked()
-#         game.move_car(car, direction)
-#         if game.tiles_blocked() > tiles:
-#             game.undo_move(car, direction)
-#         else:
-#             total_moves += 1
-#         game.generate_moveability()
-#
-#     return total_moves
-
-def distance_to_exit_heur(game):
-    carX = game.get_cars()[-1]
-    return 6 - carX.get_column() + 1
 
 def upperright_trucks_heur(game):
     totalscore = 0
@@ -110,47 +106,3 @@ def upperright_trucks_heur(game):
         totalscore += score
 
     return totalscore
-
-# <<<<<<< HEAD
-# <<<<<<< HEAD
-def exit_blocks_heur(game):
-    # Only the cars that block X (not how those cars are blocked)
-    cars = game.get_cars()
-    carX = game.get_cars()[-1]
-    amount = 0
-
-    for car in cars:
-        if car.get_orientation == "V":
-            vertical_positions = []
-
-            for i in range(car.get_length):
-                vertical_positions.append(car.get_row() + i)
-
-            if car.get_col() > carX.get_col() + 1 and carX.get_row() in vertical_positions:
-                amount += 1
-
-    return amount
-# =======
-# =======
-# >>>>>>> 6942ac0e35e05b8a2652ec1ff117b580a12e4cff
-# def exit_blocks_heur(game):
-#     # Only the cars that block X (not how those cars are blocked)
-#     cars = game.get_cars()
-#     carX = game.get_cars()[-1]
-#     amount = 0
-#
-#     for car in cars:
-#         if car.get_orientation == "V":
-#             vertical_positions = []
-#
-#             for i in range(car.get_length):
-#                 vertical_positions.append(car.get_row() + i)
-#
-#             if car.get_col() > carX.get_col() + 1 and if carX.get_row() in vertical_positions:
-#                 amount += 1
-#
-#     return amount
-
-def objective(game):
-    # Minimize
-    return tiles_blocked_heur(game) + distance_to_exit_heur(game) + upperright_trucks_heur(game) - exit_blocks_heur(game)
