@@ -4,8 +4,9 @@ from codefiles.classes.board import Board
 # from codefiles.visualisations.visuals import grid_visual, write_random, write_breadth, write_randombreadth, write_depth, write_beam, load_statistics, histograms, scatterplot
 from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm
 from codefiles.algorithms.depth_first import DepthFirst
-from codefiles.algorithms.depth_first_break import DepthFirst_break
-from codefiles.algorithms.depth_first_depth import DepthFirst_depth
+from codefiles.algorithms.depth_first_clear import DF_clear
+from codefiles.algorithms.depth_first_heur import DF_heur
+from codefiles.algorithms.depth_first_all import DF_all
 from codefiles.algorithms.breadth_first import BreadthFirst
 from codefiles.algorithms.breadth_first_random_states import BreadthFirstRandomStates
 from codefiles.algorithms.beam_search import BeamSearch
@@ -122,33 +123,58 @@ if __name__ == "__main__":
                 runtime = end - start
                 # write_beam(time, beam.get_visited_states(), dimension, int(len(beam.get_solution()) / 2) )
 
-                print(f"It took {runtime} seconds to run the Depth First Search algorithm")
+                print(f"It took {runtime} seconds to run the Beam Search algorithm")
 
             # grid_visual(game)
 
-        elif algorithm == "depth_break":
+        elif algorithm == "df_all":
+            start_run = time.time()
+            while n_runs < max_runs:
+                game = Board(dimension, filename)
+                df = DF_all(game)
 
-            df = DepthFirst_break(game)
+                start = time.time()
+                df.run()
+                end = time.time()
 
-            df.run()
+                runtime = end - start
+                # write_depth(runtime, depth.get_visited_states(), dimension, depth.get_solution())
+                n_runs += 1
 
-        elif algorithm == "depth_depth":
+                print(f"It took {runtime} seconds to run the DF_all Search algorithm")
 
-            df = DepthFirst_depth(game)
+        elif algorithm == "df_clear":
+            start_run = time.time()
+            while n_runs < max_runs:
+                game = Board(dimension, filename)
+                df = DF_clear(game)
 
-            df.run()
+                start = time.time()
+                df.run()
+                end = time.time()
 
-        elif algorithm == "df2":
+                runtime = end - start
+                # write_depth(runtime, depth.get_visited_states(), dimension, depth.get_solution())
+                n_runs += 1
 
-            df2 = DF2(game)
+                print(f"It took {runtime} seconds to run the DF_clear Search algorithm")
 
-            df2.run()
+        elif algorithm == "df_heur":
+            start_run = time.time()
+            while n_runs < max_runs:
+                game = Board(dimension, filename)
+                df = DF_heur(game)
 
-        elif algorithm == "df":
+                start = time.time()
+                df.run()
+                end = time.time()
 
-            df = DF(game)
+                runtime = end - start
+                # write_depth(runtime, depth.get_visited_states(), dimension, depth.get_solution())
+                n_runs += 1
 
-            df.run()
+                print(f"It took {runtime} seconds to run the DF_heur Search algorithm")
+
 
 
         # if algorithm == "BeamSearch":

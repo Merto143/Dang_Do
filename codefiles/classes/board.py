@@ -188,7 +188,7 @@ class Board:
 
 
     def tiles_blocked(self):
-        red_car = cars[-1]
+        red_car = self.cars[-1]
         occupied = 0
         position = self.cars[-1].get_col()
         for tile in range(position + 1, self.dim):
@@ -230,3 +230,7 @@ class Board:
                 self.grid[row][col] = self.id[item]
                 item += 1
         self.set_car_coordinates()
+
+
+    def number_of_cars_moveable(self):
+        return len(self.moveable_cars)
