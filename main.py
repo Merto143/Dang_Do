@@ -1,14 +1,11 @@
 from sys import argv
 from codefiles.classes.car import Car
 from codefiles.classes.board import Board
-# from codefiles.visualisations.visuals import *
-from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm, random_all_moves_algorithm, random_only_legal_moves_memory_algorithm
-from codefiles.algorithms.algorithms import breadth_first
+from codefiles.visualisations.visuals import grid_visual, write_random, write_breadth, write_randombreadth, write_depth, write_beam, load_statistics, histograms
+from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm
 from codefiles.algorithms.depth_first import DepthFirst
 from codefiles.algorithms.depth_first_break import DepthFirst_break
 from codefiles.algorithms.depth_first_depth import DepthFirst_depth
-from codefiles.algorithms.algorithms import breadth_first
-from codefiles.algorithms.algorithms import breadth_first
 from codefiles.algorithms.breadth_first import BreadthFirst
 from codefiles.algorithms.breadth_first_random_states import BreadthFirstRandomStates
 from codefiles.algorithms.beam_search import BeamSearch
@@ -37,6 +34,7 @@ if __name__ == "__main__":
         filename = argv[1]
         algorithm = argv[2]
         max_runs = argv[3]
+        n_runs = 0
 
         if filename[9] == "2":
             dimension = 12
@@ -76,7 +74,6 @@ if __name__ == "__main__":
             grid_visual(game)
 
         elif algorithm == "randombreadth":
-            n_runs = 0
             start_run = time.time()
             while n_runs < max_runs:
                 game = Board(dimension, filename)
@@ -95,7 +92,6 @@ if __name__ == "__main__":
             grid_visual(game)
 
         elif algorithm == "depth":
-            n_runs = 0
             start_run = time.time()
             while n_runs < max_runs:
                 game = Board(dimension, filename)
@@ -114,7 +110,6 @@ if __name__ == "__main__":
             grid_visual(game)
 
         elif algorithm == "beam":
-            n_runs = 0
             start_run = time.time()
             while n_runs < runs_max:
                 game = Board(dimension, filename)
