@@ -36,7 +36,7 @@ Er kan uit de volgende algoritmes gekozen worden:
  - breadth: hierbij wordt gebruik gemaakt van een breadth first search
  - randombreadth: een breadth first die in de queue enkel states heeft van het random algoritme
  - depth: hierbij wordt gebruikt gemaakt van een depth first search welke stopt na het vinden van de eerste oplossing
- - depth_all: hierbij wordt gebruik gemaakt van een depth first search waarbij de hele boom wordt doorgelopen. Bij het runnen van dit algoritme is het mogelijk een extra input mee te geven, namelijk de cut. Met deze parameter kun je kiezen in hoeverre je (niet) optimaal wilt prunen.
+ - depth_all: hierbij wordt gebruik gemaakt van een depth first search waarbij de hele boom wordt doorgelopen. Bij het runnen van dit algoritme is het mogelijk een extra input mee te geven, namelijk de cut. Met deze parameter kun je kiezen in hoeverre je (niet) optimaal wilt prunen. In het geval van geen extra argument wordt voor de cut waarde 0 gekozen, wat leidt tot optimaal prunen.
  - beam: hierbij wordt gebruik gemaakt van een beam Search
 Eerst zal het speelbord gevisualiseerd worden, nadat het venster wordt gesloten begint het algoritme te runnen.
 Waaneer een oplossing is gevonden zal de oplossing worden weergegeven en de laatste state van het speelbord verschijnen. Nogmaals het venster sluiten biedt de mogelijkheid om andere input te geven, daarnaast zullen de resultaten van het algoritme automatisch worden geüpload naar het geschikte csv bestand (indien aanwezig).
