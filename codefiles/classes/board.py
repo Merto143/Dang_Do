@@ -9,11 +9,13 @@ from colorhash import ColorHash
 
 class Board:
 
-    def __init__(self, dim: int, filename: str) -> None:
+    def __init__(self, dim, filename):
+        """ Initializer. """
+
         self.dim = dim
-        self.cars: list[Car] = []
+        self.cars = []
         self.grid = np.full((dim, dim), "-")
-        self.moveable_cars: list[Car] = []
+        self.moveable_cars = []
         self.visited_states = []
         self.color_dict = {}
         self.filename = filename
@@ -21,19 +23,28 @@ class Board:
         self.load_cars(f"data/{filename}.csv")
         self.add_cars_to_grid()
 
+
     def get_dim(self):
-        """Return the dimension of the board. """
+        """ Return the dimension of the board. """
+
         return self.dim
 
+
     def get_cars(self):
-        """Return a list of the car opbjects on the Board. """
+        """ Return a list of the car opbjects on the Board. """
+
         return self.cars
 
+
     def get_color_dict(self):
+        """ Returns the dictionary of colors of the cars. """
+
         return self.color_dict
 
-    def load_cars(self, file: str) -> None:
-        """Load the cars in self.cars from the datastructure. """
+
+    def load_cars(self, file):
+        """ Load the cars in self.cars from the datastructure. """
+
         with open(file) as f:
 
             line = f.readline()
@@ -54,8 +65,8 @@ class Board:
                 self.color_dict["X"] = "r"
 
 
-    def add_cars_to_grid(self) -> None:
-        """Add the cars in self.cars to the grid. """
+    def add_cars_to_grid(self):
+        """ Add the cars in self.cars to the grid. """
 
         for car in self.cars:
             spaces = car.get_car_spaces()
@@ -66,14 +77,14 @@ class Board:
                 self.grid[space[0] - 1][space[1] - 1] = car.get_name()
 
 
-    def get_moveable_cars(self) -> list[Car]:
-        """Return a list of moveable cars. """
+    def get_moveable_cars(self):
+        """ Return a list of moveable cars. """
 
         return self.moveable_cars
 
 
-    def move_car(self, car: Car, direction: str) -> None:
-        """Move a car in a given direction. """
+    def move_car(self, car, direction):
+        """ Move a car in a given direction. """
 
         # check if the move is legal
         if self.car_is_movable(car, direction):
@@ -101,8 +112,9 @@ class Board:
         car.set_coordinates(car.get_row(), car.get_col())
 
 
-    def car_is_movable(self, car: Car, direction: str) -> bool:
-        """Return True if the car is able to go in the given direction. """
+    def car_is_movable(self, car, direction):
+        """ Return True if the car is able to go in the given direction. """
+
         # check if the adjacent tile is free for a given car and direction
         if direction == "E" and car.get_orientation() == "H":
             if car.get_col() + car.get_length() <= self.dim:
@@ -127,8 +139,8 @@ class Board:
         return False
 
 
-    def generate_moveability(self) -> None:
-        """Add cars that are moveable to self.moveable_cars. """
+    def generate_moveability(self):
+        """ Add cars that are moveable to self.moveable_cars. """
         self.moveable_cars = []
 
         # go through each car
@@ -152,8 +164,8 @@ class Board:
                             self.moveable_cars.append(car)
 
 
-    def is_solved(self) -> bool:
-        """Check if the game is solved. """
+    def is_solved(self):
+        """ Check if the game is solved. """
         # define the objective car
         red_car = self.cars[-1]
 
@@ -164,14 +176,16 @@ class Board:
 
 
     def get_car(self, name):
-        """Get the car object from the car name. """
+        """ Get the car object from the car name. """
+
         for car in self.cars:
             if name == car.name:
                 return car
 
 
     def set_car_coordinates(self):
-        """Using a given grid, set the cars to the right coordinates. """
+        """ Using a given grid, set the cars to the right coordinates. """
+
         added_cars = []
 
         # go through each element of the board
@@ -188,7 +202,7 @@ class Board:
 
 
     def undo_move(self, car, direction):
-        """Move the car in the opposite direction. """
+        """ Moves the car in the opposite direction. """
 
         if direction == "E":
             self.move_car(car, "W")
@@ -201,7 +215,7 @@ class Board:
 
 
     def tiles_blocked(self):
-        """Return the amount of tiles that are blocked in front of the red car. """
+        """ Returns the amount of tiles that are blocked in front of the red car. """
 
         red_car = self.cars[-1]
         blocking_cars = []
@@ -213,7 +227,10 @@ class Board:
 
         return blocking_cars
 
+
     def blocked_cars_blocked(self):
+        """ Returns the amount of moves possible. """
+
         self.generate_moveability()
 
         blocking_cars = self.tiles_blocked()
@@ -223,6 +240,7 @@ class Board:
             moves += len(car.get_legal_moves())
 
         return max_moves - moves
+
 
     def distance_away(self):
         """Return the distance between the red car and the exit. """
@@ -257,6 +275,7 @@ class Board:
 
     def get_board_with_id(self):
         """Set the grid and car coordinates using the current board id. """
+
         # empty the grid
         self.grid = np.full((self.dim, self.dim), "-")
         item = 0
@@ -271,4 +290,6 @@ class Board:
 
 
     def number_of_cars_moveable(self):
+        """ Returns the number of moveable cars. """
+
         return len(self.moveable_cars)

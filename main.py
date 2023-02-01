@@ -54,7 +54,7 @@ if __name__ == "__main__":
                 # write_random(runtime, visited_states, dimension)
                 n_runs += 1
 
-                print(f"It took {runtime} seconds to run the random algorithm")
+                print(f"It took {runtime} seconds to run the random algorithm.")
 
             # grid_visual(game)
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
             runtime = end - start
             # write_breadth(runtime, len(breadth.get_visited_states()), dimension, int(len(breadth.get_solution()) / 2))
 
-            print(f"It took {runtime} seconds to run the Breadth First Search algorithm")
+            print(f"It took {runtime} seconds to run the Breadth First Search algorithm.")
 
             # grid_visual(game)
 
@@ -86,7 +86,7 @@ if __name__ == "__main__":
                 # write_randombreadth(runtime, len(randombreadth.get_visited_states()), dimension, int(len(randombreadth.get_solution()) / 2))
                 n_runs += 1
 
-                print(f"It took {runtime} seconds to run the optimized random algorithm")
+                print(f"It took {runtime} seconds to run the optimized random algorithm.")
 
             # grid_visual(game)
 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
                 runtime = end - start
                 # write_beam(time, beam.get_visited_states(), dimension, int(len(beam.get_solution()) / 2) )
 
-                print(f"It took {runtime} seconds to run the Beam Search algorithm")
+                print(f"It took {runtime} seconds to run the Beam Search algorithm.")
 
             # grid_visual(game)
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
                 # write_depth(runtime, depth.get_visited_states(), dimension, depth.get_solution())
                 n_runs += 1
 
-                print(f"It took {runtime} seconds to run the Depth First Search algorithm")
+                print(f"It took {runtime} seconds to run the Depth First Search algorithm.")
 
             # grid_visual(game)
 
@@ -139,7 +139,7 @@ if __name__ == "__main__":
                 # write_depth(runtime, depth.get_visited_states(), dimension, depth.get_solution())
                 n_runs += 1
 
-                print(f"It took {runtime} seconds to run the DF_all Search algorithm")
+                print(f"It took {runtime} seconds to run the DF_all Search algorithm.")
 
 
 
