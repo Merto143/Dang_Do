@@ -204,15 +204,25 @@ class Board:
         """Return the amount of tiles that are blocked in front of the red car. """
 
         red_car = self.cars[-1]
-        occupied = 0
+        blocking_cars = []
         position = self.cars[-1].get_col()
         for tile in range(position + 1, self.dim):
             # add 1 to occupied if
             if self.grid[red_car.get_row() - 1, tile] != "-":
-                occupied += 1
+                blocking_cars.append(self.get_car(self.grid[red_car.get_row() - 1, tile]))
 
-        return occupied
+        return blocking_cars
 
+    def blocked_cars_blocked(self):
+        self.generate_moveability()
+
+        blocking_cars = self.tiles_blocked()
+        max_moves = 2*len(blocking_cars)
+        moves = 0
+        for car in blocking_cars:
+            moves += len(car.get_legal_moves())
+
+        return max_moves - moves
 
     def distance_away(self):
         """Return the distance between the red car and the exit. """
@@ -226,7 +236,7 @@ class Board:
     def object_function(self):
         """Determine a score for a given state. """
 
-        score = -self.tiles_blocked() - self.distance_away()
+        score = -len(self.tiles_blocked()) - self.distance_away() - self.blocked_cars_blocked()
 
         return score
 
