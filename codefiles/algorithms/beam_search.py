@@ -1,50 +1,59 @@
 from codefiles.algorithms.breadth_first import *
 from operator import itemgetter
 import random
+import copy
 
 class BeamSearch(BreadthFirst):
     def __init__(self, game, beam):
         super().__init__(game)
         self.beam = beam
+        self.solution_found = False
 
 
     def run2(self):
         while not self.game.is_solved():
             self.scores_in_gen = []
 
-            while (self.queue.list != []):
+            while (self.queue.list and (not self.solution_found)):
                 self.move = self.queue.dequeue()
-
-                self.game.id = self.grid_memory[self.move[2]][0]
+                self.game.id = self.id_memory[self.move[2]][0]
                 self.game.get_board_with_id()
 
                 self.game.move_car(self.move[0], self.move[1])
 
-                self.memories = list(zip(*self.grid_memory))[0]
-                score = self.game.get_score()
-                grid = copy.deepcopy(self.game.grid)
-                state_score = [grid, score]
-                self.scores_in_gen.append(state_score)
-            # sorted(self.scores_in_gen, key=itemgetter(1))
+                if self.game.is_solved():
+                    self.solution_found = True
 
-            if len(self.scores_in_gen) < self.beam:
-                self.best_grids = list(zip(*self.scores_in_gen))[0]
-            else:
-                self.best_grids = list(zip(*self.scores_in_gen))[0][-self.beam:]
+                self.memories = list(zip(*self.id_memory))[0]
 
-            for grid in self.best_grids:
-                self.game.grid = copy.copy(grid)
-                self.game.set_car_coordinates()
-                self.memories = list(zip(*self.grid_memory))[0]
+                if not self.game.get_id() in self.memories:
+                    score = self.game.object_function()
+                    id = self.game.get_id()
+                    id_score = [id, score]
+                    self.scores_in_gen.append(id_score)
+            if self.solution_found:
+                print("HOI")
+
+            # if not self.solution_found:
+            #     break
+            self.highest_scores = self.get_highest_scores()
+            self.choose_scores()
+
+            for id in self.chosen_ids:
+                self.game.id = id
+                self.game.get_board_with_id()
 
                 self.add_state_to_memory()
+
+
                 self.node += 1
 
                 self.create_children()
                 self.enque_movable_cars()
 
+
         print("game is solved")
-        self.print_solution()
+        # self.print_solution()
 
 
     def run(self):
@@ -74,15 +83,45 @@ class BeamSearch(BreadthFirst):
                     self.print_solution()
                     break
 
-    def enque_movable_cars(self):
-        """Add the moveable cars and their possible directions to the queue. """
-        for car in self.cars:
-            for direction in car.get_legal_moves():
-                new_move = [[car, direction, self.node, self.gen_new], copy.copy(self.game.grid)]
-                self.queue.enqueue(new_move)
+    # def enque_movable_cars(self):
+    #     """Add the moveable cars and their possible directions to the queue. """
+    #     for car in self.cars:
+    #         for direction in car.get_legal_moves():
+    #             new_move = [[car, direction, self.node, self.gen_new], copy.copy(self.game.grid)]
+    #             self.queue.enqueue(new_move)
 
     def get_visited_states(self):
         return self.node
 
     def get_solution(self):
         return self.solution
+
+
+    def choose_scores(self):
+        if len(self.scores_in_gen) < self.beam:
+            self.chosen_ids = list(zip(*self.highest_scores))[0]
+        else:
+            random.shuffle(self.highest_scores)
+            self.chosen_ids = list(zip(*self.highest_scores))[0][self.beam:]
+
+
+    def get_highest_scores(self):
+
+        highest_scores = []
+        sorted(self.scores_in_gen, key=itemgetter(1))
+        self.scores_in_gen.reverse()
+
+        if len(self.scores_in_gen) >= self.beam:
+            for item in range(self.beam):
+                highest_scores.append(self.scores_in_gen[item])
+
+            if not item == len(self.scores_in_gen) - 1:
+                while self.scores_in_gen[item + 1][1] == self.scores_in_gen[item][1]:
+                    highest_scores.append(self.scores_in_gen[item + 1])
+                    item += 1
+
+                    if item == len(self.scores_in_gen) - 1:
+                        break
+        else:
+            highest_scores = copy.copy(self.scores_in_gen)
+        return highest_scores
