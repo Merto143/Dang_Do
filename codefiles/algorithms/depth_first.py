@@ -131,9 +131,15 @@ class DepthFirst:
 
         return self.solution
 
-
     def display_solution(self):
         print(f"We have found a solution:")
         for move in self.find_solution():
             print(move)
         print(f"Solution is {len(self.find_solution())//2} moves long")
+
+
+    def get_visited_states(self):
+        return self.visited
+
+    def get_solution(self):
+        return self.solution

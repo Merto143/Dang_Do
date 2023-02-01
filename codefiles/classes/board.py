@@ -209,3 +209,14 @@ class Board:
         score = self.tiles_blocked() + self.distance_away()
 
         return score
+
+    def get_id(self):
+        self.id = ""
+        for row in range(self.dim):
+            for col in range(self.dim):
+                item = self.grid[row][col]
+                if item == "-":
+                    self.id += "0"
+                else:
+                    self.id += item
+        return self.id
