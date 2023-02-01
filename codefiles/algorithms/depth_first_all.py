@@ -29,12 +29,8 @@ class DF_all(DepthFirst):
         self.create_next_moves()
 
     def run(self):
-        # i = 1
         while self.stack:
-            # print(f"Iteration {i}")
-            # i += 1
             item = self.pop_next_item()
-            # print(item)
             self.board.grid = copy.deepcopy(self.visited[item[2]][0])
             self.board.set_car_coordinates()
             self.board.move_car(item[0], item[1])
@@ -42,20 +38,12 @@ class DF_all(DepthFirst):
 
             self.seen_grids = list(zip(*self.visited))[0]
             if self.best_solution is None or self.depth < self.best_solution:
-            # if not any(np.array_equal(self.board.grid, grid) for grid in self.seen_grids):
                 proceed = True
                 for state in self.visited:
                     if (np.array_equal(self.board.grid, state[0]) and self.depth != 0) and self.depth + 1 >= state[2]:
-                        # print(f"Already seen: {np.array_equal(self.board.grid, state[0])}")
-                        # print(f"Too deep as well: {self.depth + 1 > state[2]}")
                         proceed = False
                         break
-                # if not any(np.array_equal(self.board.grid, state[0]) and self.depth + 1 > state[2] for state in self.visited):
                 if proceed:
-                    # print("entered!")
-                    # print(f"")
-                    # print(f"")
-                    # print(f"{not any(np.array_equal(self.board.grid, state[0]) for state in self.visited) or not any(self.depth + 1 > state[2] for state in self.visited)}")
                     self.moves.append(item)
                     self.visited.append([self.board.grid, item, self.depth + 1])
                     self.increase_node()
@@ -67,10 +55,10 @@ class DF_all(DepthFirst):
 
                 if self.board.is_solved():
                     self.display_solution()
-                    # if self.best_solution is None or self.get_length_solution() < self.best_solution:
-                    #     if self.best_solution is not None and self.get_length_solution() < self.best_solution:
-                    #         print(f"Found a better solution: {self.get_length_solution()} < {self.best_solution}")
-                    #     self.best_solution = self.get_length_solution()
+                    if self.best_solution is None or self.get_length_solution() < self.best_solution:
+                        if self.best_solution is not None and self.get_length_solution() < self.best_solution:
+                            print(f"Found a better solution: {self.get_length_solution()} < {self.best_solution}")
+                        self.best_solution = self.get_length_solution()
                     self.compare_solutions()
 
         print(f"Our best solution is {self.best_solution}")

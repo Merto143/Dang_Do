@@ -12,7 +12,6 @@ class DepthFirst:
 
         self.solution = []
 
-        # self.start_depth = 0
         self.depth = 0
         self.visited = [[copy.deepcopy(self.board.grid), "-", self.depth]]
         self.moves = []
