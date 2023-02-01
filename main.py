@@ -16,7 +16,7 @@ import time
 
 if __name__ == "__main__":
 
-    if len(argv) != 4:
+    if len(argv) != 4 and argv[2] != "depth_all":
         print("Usage: python3 main.py [filename] [algorithm] [nr of runs] OR python3 main.py statistics [algorithm] [dimension]")
         exit(1)
 
@@ -31,7 +31,12 @@ if __name__ == "__main__":
 
         filename = argv[1]
         algorithm = argv[2]
-        max_runs = int(argv[3])
+        if algorithm == "depth_all" and len(argv) == 5:
+                cut = int(argv[3])
+                max_runs = int(argv[4])
+        else:
+            cut = 0
+            max_runs = int(argv[3])
         n_runs = 0
 
         if filename[9] == "2":
@@ -129,7 +134,7 @@ if __name__ == "__main__":
             start_run = time.time()
             while n_runs < max_runs:
                 game = Board(dimension, filename)
-                df = DF_all(game)
+                df = DF_all(game, cut)
 
                 start = time.time()
                 df.run()

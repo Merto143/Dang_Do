@@ -6,14 +6,17 @@ from codefiles.algorithms.depth_first import DepthFirst
 class DF_all(DepthFirst):
     """ Depth first search until all possible solutions are found.
         Algorithm does not search deeper in tree than best current solution.
-        Algorithm skips states that already have been seen and have equal or higher depth to previously seen equal state.
-        Takes a lot of time to run, but should find the best solution. """
+        It is possible to give this algorithm an extra parameter, namely the cut.
+        This is the distance in steps (up the tree), for which we don't want to
+        consider a state in case we have seen an identical state deeper in the tree. """
 
-    def __init__(self, game):
+    def __init__(self, game, cut):
+        """ Initializer. """
         self.board = game
         self.board.generate_moveability()
         self.node = 0
         self.nr_sol = 0
+        self.cut = int(cut)
 
         self.depth = 0
         self.visited = [[copy.deepcopy(self.board.grid), "-", self.depth]]
@@ -68,7 +71,7 @@ class DF_all(DepthFirst):
             Sets self.proceed to False if this state can not lead to a new best solution. """
 
         for state in self.visited:
-            if (np.array_equal(self.board.grid, state[0]) and self.depth != 0) and self.depth + 1 >= state[2]:
+            if (np.array_equal(self.board.grid, state[0]) and self.depth != 0) and self.depth + 1 >= state[2] - self.cut:
                 self.proceed = False
                 break
 
