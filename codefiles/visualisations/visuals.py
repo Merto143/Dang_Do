@@ -79,7 +79,7 @@ def histograms(algorithm, data, dimension):
     visited_states = []
     for i in range(len(data)):
         visited_states.append(data[i][1])
-    plt.hist(visited_states, bins = len(data) // 3 )
+    plt.hist(visited_states, bins = round(len(data) ** (1/2)))
     plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
     plt.ylabel("Relative Frequency")
     plt.xlabel("Visited States")
@@ -88,7 +88,7 @@ def histograms(algorithm, data, dimension):
     time = []
     for j in range(len(data)):
         time.append(data[j][0])
-    plt.hist(time, bins = len(data) // 3)
+    plt.hist(time, bins = round(len(data) ** (1/2)))
     plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
     plt.ylabel("Relative Frequency")
     plt.xlabel("Time elapsed (s)")
@@ -98,37 +98,48 @@ def histograms(algorithm, data, dimension):
         path = []
         for k in range(len(data)):
             path.append(data[k][2])
-        plt.hist(path, bins = len(data) // 3)
+        plt.hist(path, bins = round(len(data) ** (1/2)))
         plt.title(f"Histogram: '{algorithm}' {dimension}x{dimension}")
         plt.ylabel("Relative Frequency")
-        plt.xlabel("Shortes Path")
+        plt.xlabel("Shortest Path")
         plt.show()
 
-# def scatterplot(algorithm, data, dimension):
-#
-#     algorithms = ["random", "randombreadth", "breadth", "depth", "beam"]
-#     datalist = []
-#     for i in range(len(algorithms)):
-#         if not algorithms[i] == algorithm:
-#             datalist.append(load_statistics(algorithms[i], dimension))
-#         else:
-#             datalist.append(data)
-#         for j in range(len(datalist[i])):
-#             xaxis = datalist[i][j][1]
-#             yaxis = datalist[i][j][0]
-#             plt.ylim([0,10])
-#             plt.scatter(xaxis, yaxis)
-#     plt.show()
-#
-#     dimensions = [6, 9, 12]
-#     datalist = [data]
-#     for i in range(len(dimensions)):
-#         if not dimensions[i] == dimension:
-#             datalist.append(load_statistics(algorithm, dimensions[i]))
-#         else:
-#             datalist.append(data)
-#         for j in range(len(datalist[i])):
-#             xaxis = datalist[i][j][-1]
-#             yaxis = datalist[i][j][0]
-#             plt.scatter(xaxis, yaxis)
-#     plt.show()
+def scatterplot(algorithm, data, dimension):
+
+    algorithms = ["randombreadth", "breadth", "depth"]
+    datalist = []
+    for i in range(len(algorithms)):
+        if not algorithms[i] == algorithm:
+            datalist.append(load_statistics(algorithms[i], dimension))
+        else:
+            datalist.append(data)
+        xaxis = []
+        yaxis = []
+        if not algorithms[i] == "random":
+            for j in range(len(datalist[i])):
+                xaxis.append(datalist[i][j][1])
+                yaxis.append(datalist[i][j][-1])
+            plt.xlabel("Visited States")
+            plt.ylabel("Shortest Path")
+            plt.xlim([250,650])
+            plt.yscale("log")
+            plt.scatter(xaxis, yaxis, c=ColorHash(algorithms[i]).hex)
+    plt.show()
+
+    if not algorithm == "random":
+        dimensions = [6, 9, 12]
+        datalist = [data]
+        for i in range(len(dimensions)):
+            if not dimensions[i] == dimension:
+                datalist.append(load_statistics(algorithm, dimensions[i]))
+            else:
+                datalist.append(data)
+            xaxis = []
+            yaxis = []
+            for j in range(len(datalist[i])):
+                xaxis.append(datalist[i][j][1])
+                yaxis.append(datalist[i][j][-1])
+                plt.scatter(xaxis, yaxis, c="k")
+                plt.xlabel("Visited States")
+                plt.ylabel("Shortest Path")
+        plt.show()

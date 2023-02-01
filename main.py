@@ -1,10 +1,11 @@
 from sys import argv
 from codefiles.classes.car import Car
 from codefiles.classes.board import Board
-# from codefiles.visualisations.visuals import grid_visual, write_random, write_breadth, write_randombreadth, write_depth, write_beam, load_statistics, histograms, scatterplot
+from codefiles.visualisations.visuals import grid_visual, write_random, write_breadth, write_randombreadth, write_depth, write_beam, load_statistics, histograms, scatterplot
 from codefiles.algorithms.algorithms import random_only_legal_moves_algorithm
 from codefiles.algorithms.depth_first import DepthFirst
-from codefiles.algorithms.depth_first_all import DF_all
+from codefiles.algorithms.depth_first_break import DepthFirst_break
+from codefiles.algorithms.depth_first_depth import DepthFirst_depth
 from codefiles.algorithms.breadth_first import BreadthFirst
 from codefiles.algorithms.breadth_first_random_states import BreadthFirstRandomStates
 from codefiles.algorithms.beam_search import BeamSearch
@@ -45,7 +46,7 @@ if __name__ == "__main__":
             dimension = int(filename[8])
 
         game = Board(dimension, filename)
-        # grid_visual(game)
+        grid_visual(game)
 
 
         if algorithm == "random":
@@ -59,7 +60,7 @@ if __name__ == "__main__":
                 # write_random(runtime, visited_states, dimension)
                 n_runs += 1
 
-                print(f"It took {runtime} seconds to run the random algorithm.")
+                print(f"It took {runtime} seconds to run the random algorithm")
 
             # grid_visual(game)
 
@@ -72,43 +73,26 @@ if __name__ == "__main__":
             runtime = end - start
             # write_breadth(runtime, len(breadth.get_visited_states()), dimension, int(len(breadth.get_solution()) / 2))
 
-            print(f"It took {runtime} seconds to run the Breadth First Search algorithm.")
+            print(f"It took {runtime} seconds to run the Breadth First Search algorithm")
 
             # grid_visual(game)
 
         elif algorithm == "randombreadth":
             start_run = time.time()
-            random_repeats = 3
+            random_repeats = 1
             while n_runs < max_runs:
                 game = Board(dimension, filename)
-                randombreadth = BreadthFirstRandomStates(game, random_repeats)
 
                 start = time.time()
+                randombreadth = BreadthFirstRandomStates(game, random_repeats)
                 randombreadth.run()
                 end = time.time()
 
                 runtime = end - start
-                # write_randombreadth(runtime, len(randombreadth.get_visited_states()), dimension, int(len(randombreadth.get_solution()) / 2))
+                write_randombreadth(runtime, len(randombreadth.get_visited_states()), dimension, int(len(randombreadth.get_solution()) / 2))
                 n_runs += 1
 
-                print(f"It took {runtime} seconds to run the optimized random algorithm.")
-
-            # grid_visual(game)
-
-        elif algorithm == "beam":
-            start_run = time.time()
-            while n_runs < max_runs:
-                game = Board(dimension, filename)
-                beam = BeamSearch(game, 3)
-
-                start = time.time()
-                beam.run2()
-                end = time.time()
-
-                runtime = end - start
-                # write_beam(time, beam.get_visited_states(), dimension, int(len(beam.get_solution()) / 2) )
-
-                print(f"It took {runtime} seconds to run the Beam Search algorithm.")
+                print(f"It took {runtime} seconds to run the optimized random algorithm")
 
             # grid_visual(game)
 
@@ -123,72 +107,41 @@ if __name__ == "__main__":
                 end = time.time()
 
                 runtime = end - start
-                # write_depth(runtime, depth.get_visited_states(), dimension, depth.get_solution())
+                write_depth(runtime, len(depth.get_visited_states()) - 1, dimension, len(depth.get_solution()))
                 n_runs += 1
 
-                print(f"It took {runtime} seconds to run the Depth First Search algorithm.")
+                print(f"It took {runtime} seconds to run the DepthFirst Search algorithm")
 
             # grid_visual(game)
 
         elif algorithm == "depth_all":
             start_run = time.time()
-            while n_runs < max_runs:
+            while n_runs < runs_max:
                 game = Board(dimension, filename)
+
                 df = DF_all(game, cut)
 
                 start = time.time()
-                df.run()
+                depth.run()
                 end = time.time()
 
                 runtime = end - start
-                # write_depth(runtime, depth.get_visited_states(), dimension, depth.get_solution())
+                write_depth(runtime, len(depth.get_visited_states()) - 1, dimension, len(depth.get_solution()))
                 n_runs += 1
 
-                print(f"It took {runtime} seconds to run the DF_all Search algorithm.")
+                print(f"It took {runtime} seconds to run the DF_all Search algorithm")
 
+        elif algorithm == "beam":
 
+                beam = BeamSearch(game)
 
+                start = time.time()
+                beam.run()
+                end = time.time()
 
+                runtime = end - start
+                # write_beam(time, beam.get_visited_states(), dimension, int(len(beam.get_solution()) / 2) )
 
+                print(f"It took {runtime} seconds to run the Beam Search algorithm")
 
-
-        # if algorithm == "BeamSearch":
-        #     game = Board(dimension, filename)
-        #     start = time.time()
-        #     bs = BeamSearch(game, 3)
-        #     bs.run()
-        #     end = time.time()
-        #     t = end - start
-        #     # write_random(t, iterations, dimension)
-        #
-        #     print(f"It took {end - start} seconds to run the random algorithm")
-        #
-        # elif algorithm == "random_memory":
-        #     game = Board(dimension, filename)
-        #     start = time.time()
-        #     iterations = random_only_legal_moves_algorithm_with_memory(game)
-        #     end = time.time()
-        #     t = end - start
-        #     # write_random(t, iterations, dimension)
-        #
-        #     print(f"It took {end - start} seconds to run the random algorithm")
-        #
-        # elif algorithm == "random":
-        #     game = Board(dimension, filename)
-        #     start = time.time()
-        #     iterations = random_only_legal_moves_algorithm(game)
-        #     end = time.time()
-        #     t = end - start
-        #     # write_random(t, iterations, dimension)
-        #
-        #     print(f"It took {end - start} seconds to run the random algorithm")
-        #
-        # elif algorithm == "random_id":
-        #     game = Board(dimension, filename)
-        #     start = time.time()
-        #     iterations = random_only_legal_moves_algorithm_id(game)
-        #     end = time.time()
-        #     t = end - start
-        #     # write_random(t, iterations, dimension)
-        #
-        #     print(f"It took {end - start} seconds to run the random algorithm")
+            # grid_visual(game)
